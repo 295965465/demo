@@ -1,0 +1,160 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 117 ciObject found
+ciMethod sun/misc/Unsafe compareAndSwapInt (Ljava/lang/Object;JII)Z 2049 1 256 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap tabAt ([Ljava/util/concurrent/ConcurrentHashMap$Node;I)Ljava/util/concurrent/ConcurrentHashMap$Node; 3137 1 69765 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap casTabAt ([Ljava/util/concurrent/ConcurrentHashMap$Node;ILjava/util/concurrent/ConcurrentHashMap$Node;Ljava/util/concurrent/ConcurrentHashMap$Node;)Z 2049 1 15909 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap setTabAt ([Ljava/util/concurrent/ConcurrentHashMap$Node;ILjava/util/concurrent/ConcurrentHashMap$Node;)V 2929 1 5526 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap resizeStamp (I)I 209 1 248 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap transfer ([Ljava/util/concurrent/ConcurrentHashMap$Node;[Ljava/util/concurrent/ConcurrentHashMap$Node;)V 105 21881 124 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap untreeify (Ljava/util/concurrent/ConcurrentHashMap$Node;)Ljava/util/concurrent/ConcurrentHashMap$Node; 17 73 2 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap$Node <init> (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/concurrent/ConcurrentHashMap$Node;)V 2049 1 12109 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap$ForwardingNode <init> ([Ljava/util/concurrent/ConcurrentHashMap$Node;)V 209 1 124 0 -1
+ciMethodData java/util/concurrent/ConcurrentHashMap transfer ([Ljava/util/concurrent/ConcurrentHashMap$Node;[Ljava/util/concurrent/ConcurrentHashMap$Node;)V 2 92873 orig 264 88 50 207 88 0 0 0 0 224 254 219 22 0 0 0 0 216 9 0 0 88 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 175 10 0 0 121 3 0 0 209 0 11 0 0 0 0 0 0 0 0 0 2 0 0 0 4 0 97 0 2 0 0 0 112 8 0 0 255 255 255 255 7 0 7 0 0 0 0 0 data 270 0x70007 0x0 0x38 0x6f 0x110003 0x6f 0x18 0x1a0007 0x8 0x20 0x67 0x220007 0x0 0x68 0x6f 0x2b0004 0x0 0x18b5c630 0x10 0x0 0x0 0x330003 0x6f 0x18 0x520002 0x6f 0x650007 0xa2be 0x150 0xa2be 0x6f0007 0xa031 0x40 0x28d 0x740007 0x21e 0x38 0x6f 0x7a0003 0xa0a0 0xd8 0x840007 0x1af 0x38 0x6f 0x8d0003 0x6f 0xa0 0x9d0007 0x6f 0x38 0x140 0xa50003 0x140 0x18 0xac0005 0xfe 0x0 0x0 0x0 0x0 0xaf0007 0x0 0x20 0x1af 0xbf0003 0xa2be 0xfffffffffffffec8 0xc40007 0xde 0x60 0xa1e0 0xca0007 0x0 0x40 0xa1e0 0xd30007 0xa1e0 0xd8 0x0 0xd80007 0x6f 0x20 0x6f 0x1030005 0xe 0x0 0x0 0x0 0x0 0x1060007 0x0 0x50 0x6f 0x10e0002 0x6f 0x1150007 0x6f 0x20 0x0 0x1220003 0x6f 0x538 0x1280002 0xa1e0 0x12e0007 0x7a44 0x48 0x279c 0x1370002 0x279c 0x13c0003 0x279c 0x4e0 0x1480007 0x2954 0x38 0x50f0 0x14e0003 0x50f0 0x4a8 0x15a0002 0x2954 0x15f0007 0x0 0x468 0x2954 0x1640007 0x1 0x188 0x2953 0x17a0007 0x2953 0x58 0x1148 0x18a0007 0x886 0x20 0x8c2 0x19c0003 0x1148 0xffffffffffffffc0 0x1a10007 0x148a 0x38 0x14c9 0x1ab0003 0x14c9 0x18 0x1bd0007 0x2953 0x90 0x9bb 0x1d90007 0x4b9 0x48 0x502 0x1e80002 0x502 0x1ed0003 0x502 0x28 0x1fc0002 0x4b9 0x2080003 0x9bb 0xffffffffffffff88 0x2100002 0x2953 0x21a0002 0x2953 0x2220002 0x2953 0x2280003 0x2953 0x2d8 0x22d0004 0x0 0x18b5d150 0x1 0x0 0x0 0x2300007 0x0 0x290 0x1 0x2350004 0x0 0x18b5d150 0x1 0x0 0x0 0x2550007 0x1 0xf0 0x9 0x2710002 0x9 0x27a0007 0x3 0x70 0x6 0x2850007 0x5 0x38 0x1 0x28c0003 0x1 0x18 0x29d0003 0x6 0x50 0x2a80007 0x2 0x38 0x1 0x2af0003 0x1 0x18 0x2c70003 0x9 0xffffffffffffff28 0x2ce0007 0x0 0x48 0x1 0x2d30002 0x1 0x2d60003 0x1 0x60 0x2db0007 0x0 0x48 0x0 0x2e40002 0x0 0x2e70003 0x0 0x18 0x2f20007 0x0 0x48 0x1 0x2f70002 0x1 0x2fa0003 0x1 0x60 0x2ff0007 0x0 0x48 0x0 0x3080002 0x0 0x30b0003 0x0 0x18 0x3170002 0x1 0x3210002 0x1 0x3290002 0x1 0x3320003 0x2954 0x18 0x33d0003 0xa24f 0xfffffffffffff878 oops 3 17 [Ljava/util/concurrent/ConcurrentHashMap$Node; 178 java/util/concurrent/ConcurrentHashMap$TreeBin 188 java/util/concurrent/ConcurrentHashMap$TreeBin
+ciMethod java/util/concurrent/ConcurrentHashMap$TreeNode <init> (ILjava/lang/Object;Ljava/lang/Object;Ljava/util/concurrent/ConcurrentHashMap$Node;Ljava/util/concurrent/ConcurrentHashMap$TreeNode;)V 145 1 18 0 -1
+ciMethod java/util/concurrent/ConcurrentHashMap$TreeBin <init> (Ljava/util/concurrent/ConcurrentHashMap$TreeNode;)V 9 177 1 0 -1
+instanceKlass java/util/LinkedList$ListItr
+instanceKlass org/apache/http/entity/HttpEntityWrapper
+instanceKlass org/apache/http/conn/EofSensorWatcher
+instanceKlass org/apache/http/impl/execchain/HttpResponseProxy
+instanceKlass org/apache/http/message/BasicHeaderValueParser
+instanceKlass org/apache/http/message/HeaderValueParser
+instanceKlass org/apache/http/message/BasicHeaderElementIterator
+instanceKlass org/apache/http/message/BasicHeaderIterator
+instanceKlass org/apache/http/message/BasicTokenIterator
+instanceKlass org/apache/http/entity/AbstractHttpEntity
+instanceKlass org/apache/http/message/BufferedHeader
+instanceKlass org/apache/http/message/BasicStatusLine
+instanceKlass org/apache/http/protocol/HTTP
+instanceKlass sun/util/locale/provider/TimeZoneNameUtility$TimeZoneNameGetter
+instanceKlass sun/util/locale/provider/TimeZoneNameUtility
+instanceKlass sun/misc/VMSupport
+instanceKlass org/apache/http/FormattedHeader
+instanceKlass org/apache/http/message/BasicListHeaderIterator
+instanceKlass java/net/Socket$3
+instanceKlass org/apache/http/impl/auth/HttpAuthenticator$1
+instanceKlass org/apache/http/util/NetUtils
+instanceKlass java/net/InetAddressContainer
+instanceKlass org/apache/http/config/SocketConfig$Builder
+instanceKlass org/apache/http/config/SocketConfig
+instanceKlass org/apache/http/conn/routing/RouteTracker
+instanceKlass org/apache/http/impl/execchain/ConnectionHolder
+instanceKlass org/apache/http/conn/ConnectionReleaseTrigger
+instanceKlass org/apache/http/impl/conn/CPoolProxy
+instanceKlass org/apache/http/impl/conn/Wire
+instanceKlass org/apache/http/impl/io/AbstractMessageParser
+instanceKlass org/apache/http/impl/io/AbstractMessageWriter
+instanceKlass org/apache/http/impl/HttpConnectionMetricsImpl
+instanceKlass org/apache/http/impl/io/SessionOutputBufferImpl
+instanceKlass org/apache/http/util/ByteArrayBuffer
+instanceKlass org/apache/http/config/MessageConstraints$Builder
+instanceKlass org/apache/http/config/MessageConstraints
+instanceKlass org/apache/http/impl/io/SessionInputBufferImpl
+instanceKlass org/apache/http/io/BufferInfo
+instanceKlass org/apache/http/impl/io/HttpTransportMetricsImpl
+instanceKlass org/apache/http/HttpConnectionMetrics
+instanceKlass org/apache/http/io/SessionInputBuffer
+instanceKlass org/apache/http/io/SessionOutputBuffer
+instanceKlass org/apache/http/io/HttpTransportMetrics
+instanceKlass org/apache/http/config/ConnectionConfig$Builder
+instanceKlass org/apache/http/config/ConnectionConfig
+instanceKlass org/apache/http/impl/conn/PoolingHttpClientConnectionManager$1
+instanceKlass org/apache/http/pool/AbstractConnPool$2
+instanceKlass org/apache/http/util/Asserts
+instanceKlass org/apache/http/util/LangUtils
+instanceKlass org/apache/http/pool/PoolStats
+instanceKlass java/util/TreeMap$PrivateEntryIterator
+instanceKlass org/apache/http/impl/cookie/DefaultCookieSpec
+instanceKlass org/apache/http/impl/cookie/BasicDomainHandler
+instanceKlass org/apache/http/impl/cookie/RFC2109DomainHandler
+instanceKlass org/apache/http/impl/cookie/RFC2965DiscardAttributeHandler
+instanceKlass org/apache/http/impl/cookie/RFC2965CommentUrlAttributeHandler
+instanceKlass org/apache/http/impl/cookie/AbstractCookieAttributeHandler
+instanceKlass org/apache/http/impl/cookie/RFC2965PortAttributeHandler
+instanceKlass org/apache/http/impl/cookie/PublicSuffixDomainFilter
+instanceKlass org/apache/http/impl/cookie/RFC2965DomainAttributeHandler
+instanceKlass org/apache/http/impl/cookie/RFC2965VersionAttributeHandler
+instanceKlass org/apache/http/cookie/SetCookie
+instanceKlass org/apache/http/cookie/Cookie
+instanceKlass org/apache/http/impl/cookie/AbstractCookieSpec
+instanceKlass org/apache/http/cookie/CookieOrigin
+instanceKlass ch/qos/logback/core/CoreConstants
+instanceKlass java/text/DontCareFieldPosition$1
+instanceKlass java/text/Format$FieldDelegate
+instanceKlass ch/qos/logback/classic/util/LogbackMDCAdapter
+instanceKlass org/slf4j/impl/StaticMDCBinder
+instanceKlass org/slf4j/spi/MDCAdapter
+instanceKlass org/slf4j/MDC
+instanceKlass ch/qos/logback/classic/spi/EventArgUtil
+instanceKlass ch/qos/logback/classic/spi/IThrowableProxy
+instanceKlass ch/qos/logback/classic/spi/LoggingEvent
+instanceKlass org/apache/http/HeaderElement
+instanceKlass org/apache/http/message/BasicHeader
+instanceKlass org/apache/http/message/ParserCursor
+instanceKlass org/apache/http/message/TokenParser
+instanceKlass org/apache/http/util/CharArrayBuffer
+instanceKlass org/apache/http/conn/routing/HttpRoute
+instanceKlass org/apache/http/auth/AuthState
+instanceKlass java/util/concurrent/ConcurrentHashMap$Traverser
+instanceKlass org/apache/http/protocol/HttpCoreContext
+instanceKlass org/apache/http/protocol/BasicHttpContext
+instanceKlass org/apache/http/message/BasicRequestLine
+instanceKlass org/apache/http/params/HttpProtocolParams
+instanceKlass org/apache/http/params/CoreProtocolPNames
+instanceKlass org/apache/http/params/AbstractHttpParams
+instanceKlass org/apache/http/params/HttpParamsNames
+instanceKlass org/apache/http/HttpEntityEnclosingRequest
+instanceKlass org/apache/http/HttpHost
+instanceKlass org/apache/http/client/utils/URIUtils
+instanceKlass org/apache/http/message/HeaderGroup
+instanceKlass org/apache/http/client/utils/URLEncodedUtils
+instanceKlass org/apache/http/params/HttpParams
+instanceKlass org/apache/http/message/AbstractHttpMessage
+instanceKlass org/apache/http/client/methods/AbortableHttpRequest
+instanceKlass org/apache/http/client/methods/HttpExecutionAware
+instanceKlass org/apache/http/message/BasicNameValuePair
+instanceKlass org/apache/http/client/utils/URIBuilder
+instanceKlass org/apache/http/client/config/RequestConfig$Builder
+instanceKlass org/apache/http/client/config/RequestConfig
+instanceKlass org/apache/http/conn/ClientConnectionManager
+instanceKlass org/apache/http/impl/client/HttpClientBuilder$2
+instanceKlass org/apache/http/impl/client/BasicCredentialsProvider
+instanceKlass java/util/concurrent/locks/ReentrantReadWriteLock$WriteLock
+instanceKlass java/util/concurrent/locks/ReentrantReadWriteLock$ReadLock
+instanceKlass sun/nio/ch/Interruptible
+instanceKlass java/util/concurrent/locks/ReentrantReadWriteLock
+instanceKlass org/apache/http/cookie/CookieIdentityComparator
+instanceKlass java/util/concurrent/locks/ReadWriteLock
+instanceKlass org/apache/http/impl/client/BasicCookieStore
+instanceKlass org/apache/http/impl/cookie/IgnoreSpecProvider
+instanceKlass org/apache/http/impl/cookie/NetscapeDraftSpecProvider
+instanceKlass org/apache/http/impl/cookie/RFC6265CookieSpecProvider
+instanceKlass org/apache/http/cookie/CookieSpec
+instanceKlass org/apache/http/impl/cookie/BasicPathHandler
+instanceKlass org/apache/http/cookie/CommonCookieAttributeHandler
+instanceKlass org/apache/http/cookie/CookieAttributeHandler
+instanceKlass org/apache/http/impl/cookie/DefaultCookieSpecProvider
+instanceKlass org/apache/http/cookie/CookieSpecProvider
+instanceKlass org/apache/http/impl/client/CookieSpecRegistries
+instanceKlass org/apache/http/impl/auth/KerberosSchemeFactory
+instanceKlass org/apache/http/impl/auth/SPNegoSchemeFactory
+instanceKlass org/apache/http/impl/auth/NTLMSchemeFactory
+instanceKlass org/apache/http/impl/auth/DigestSchemeFactory
+instanceKlass org/apache/http/auth/AuthScheme
+instanceKlass org/apache/http/impl/auth/BasicSchemeFactory
+instanceKlass org/apache/http/auth/AuthSchemeProvider
+instanceKlass org/apache/http/auth/AuthSchemeFactory
+instanceKlass org/apache/http/impl/execchain/RedirectExec
+instanceKlass org/apache/http/impl/client/DefaultRedirectStrategy
+instanceKlass org/apache/http/impl/conn/DefaultRoutePlanner
+instanceKlass org/apache/http/impl/execchain/RetryExec
+instanceKlass org/apache/http/impl/client/DefaultHttpRequestRetryHandler
+instanceKlass org/apache/http/auth/Credentials
+instanceKlass org/apache/http/impl/execchain/ProtocolExec
+instanceKlass org/apache/http/client/entity/DeflateInputStreamFactory
+instanceKlass org/apache/http/client/entity/GZIPInputStreamFactory
+instanceKlass org/apache/http/client/entity/InputStreamFactory
+instanceKlass org/apache/http/client/protocol/ResponseContentEncoding
+instanceKlass org/apache/http/client/protocol/ResponseProcessCookies
+instanceKlass org/apache/http/client/protocol/RequestAuthCache
