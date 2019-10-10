@@ -8,13 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+        body{margin: 10px;}
+        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+
+        /*label.layui-form-label before： {
+             content: '* ';
+             color: red;
+         }*/
+
+    </style>
 </head>
 <body>
 
+<table class="layui-hide" id="demo" lay-filter="test"></table>
 
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">最小化</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">最大化</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">关闭</a>
+</script>
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-    <legend>德威付款页面</legend>
+    <legend>付款单</legend>
 </fieldset>
 
 <form class="layui-form" action="">
@@ -29,22 +45,8 @@
                     <option value="2">form</option>
                     <option value="3">layim</option>
                     <option value="4">element</option>
-                    <option value="5">laytpl</option>
-                    <option value="6">upload</option>
-                    <option value="7">laydate</option>
-                    <option value="8">laypage</option>
-                    <option value="9">flow</option>
-                    <option value="10">util</option>
-                    <option value="11">code</option>
-                    <option value="12">tree</option>
-                    <option value="13">layedit</option>
-                    <option value="14">nav</option>
-                    <option value="15">tab</option>
-                    <option value="16">table</option>
-                    <option value="17">select</option>
-                    <option value="18">checkbox</option>
-                    <option value="19">switch</option>
-                    <option value="20">radio</option>
+
+
                 </select>
             </div>
         </div>
@@ -52,27 +54,13 @@
             <label class="layui-form-label">结算方式</label>
             <div class="layui-input-inline">
                 <select name="paymentMethod" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
+                    <option value="">快速</option>
                     <option value="1">layer</option>
                     <option value="2">form</option>
                     <option value="3">layim</option>
                     <option value="4">element</option>
-                    <option value="5">laytpl</option>
-                    <option value="6">upload</option>
-                    <option value="7">laydate</option>
-                    <option value="8">laypage</option>
-                    <option value="9">flow</option>
-                    <option value="10">util</option>
-                    <option value="11">code</option>
-                    <option value="12">tree</option>
-                    <option value="13">layedit</option>
-                    <option value="14">nav</option>
-                    <option value="15">tab</option>
-                    <option value="16">table</option>
-                    <option value="17">select</option>
-                    <option value="18">checkbox</option>
-                    <option value="19">switch</option>
-                    <option value="20">radio</option>
+
+
                 </select>
             </div>
         </div>
@@ -86,11 +74,11 @@
                     <label class="layui-form-label">付款单位</label>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">支付类型</label>
+                    <label class="layui-form-label">支付类别</label>
                     <div class="layui-input-block">
                         <select name="interest" lay-filter="aihao">
                             <option value=""></option>
-                            <option value="0">写作</option>
+                            <option value="0">主营业务</option>
                             <option value="1" selected="">阅读</option>
                             <option value="2">游戏</option>
                             <option value="3">音乐</option>
@@ -105,84 +93,76 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">支付银行</label>
+                    <label class="layui-form-label">支付银行<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <select name="interest" lay-filter="aihao">
+                        <select name="bank" lay-filter="bank">
                             <option value=""></option>
-                            <option value="0">写作</option>
-                            <option value="1" selected="">阅读</option>
-                            <option value="2">游戏</option>
-                            <option value="3">音乐</option>
-                            <option value="4">旅行</option>
+                            <option value="0">招商银行</option>
+                            <option value="1" selected="">中国银行</option>
+                            <option value="2">浦发银行</option>
+                            <option value="3">中国工商银行</option>
+                            <option value="4">交通银行</option>
+                            <option value="5">中国光大银行</option>
+                            <option value="6">中信银行</option>
+                            <option value="7">广发银行</option>
+                            <option value="8">中国建设银行</option>
+                            <option value="9">兴业银行</option>
+                            <option value="10">平安银行</option>
+
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">付款账号</label>
+                    <label class="layui-form-label">付方账号<span style="color:red;">* </span></label>
                     <div class="layui-input-inline">
                         <select name="paymentMethod" lay-verify="required" lay-search="">
-                            <option value="">直接选择或搜索选择</option>
                             <option value="1">layer</option>
                             <option value="2">form</option>
                             <option value="3">layim</option>
                             <option value="4">element</option>
                             <option value="5">laytpl</option>
-                            <option value="6">upload</option>
-                            <option value="7">laydate</option>
-                            <option value="8">laypage</option>
-                            <option value="9">flow</option>
-                            <option value="10">util</option>
-                            <option value="11">code</option>
-                            <option value="12">tree</option>
-                            <option value="13">layedit</option>
-                            <option value="14">nav</option>
-                            <option value="15">tab</option>
-                            <option value="16">table</option>
-                            <option value="17">select</option>
-                            <option value="18">checkbox</option>
-                            <option value="19">switch</option>
-                            <option value="20">radio</option>
+
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" readonly="true" style="background-color: #c2c2c2"
-                               autocomplete="off" placeholder="账号" class="layui-input">
+                        <input type="text" name="title" readonly="true" style="background-color: #f3f4f5"
+                               autocomplete="off" placeholder="德威国际货运代理（上海）有限公司" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">开户地区</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" readonly="true" style="background-color: #c2c2c2"
-                               autocomplete="off" placeholder="开户地区" class="layui-input">
+                        <input type="text" name="title" readonly="true"
+                               autocomplete="off" placeholder="上海市" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">发票信息</label>
+                    <label class="layui-form-label">发票信息<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
                         <textarea placeholder="请输入内容" name="faPiao" class="layui-textarea"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">支付金额</label>
+                        <label class="layui-form-label">支付金额<span style="color:red;">* </span></label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入金额" class="layui-input">
+                            <input type="money" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">货币名称</label>
+                        <label class="layui-form-label">币种名称</label>
                         <div class="layui-input-inline">
-                            <select name="paymentMethod" lay-verify="required" lay-search="">
-                                <option value="">直接选择或搜索选择</option>
+                            <select type="text" name="moneyname" lay-verify="moneyname" autocomplete="off" class="layui-input">
                                 <option value="1">RMB</option>
                                 <option value="2">USD</option>
                             </select>
                         </div>
                     </div>
                 </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">业务类型</label>
                     <div class="layui-input-inline">
@@ -200,7 +180,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用途</label>
+                    <label class="layui-form-label">用途<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
                         <textarea name="yunTu" placeholder="请输入内容" class="layui-textarea"></textarea>
                     </div>
@@ -211,7 +191,7 @@
                 <label class="layui-form-label">收款单位</label>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">顾客ID</label>
+                    <label class="layui-form-label">客户ID<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
                         <select name="paymentMethod1" lay-verify="required" lay-search="">
                             <option value="">直接选择或搜索选择</option>
@@ -220,28 +200,76 @@
                             <option value="3">layim</option>
                             <option value="4">element</option>
                             <option value="5">laytpl</option>
-                            <option value="6">upload</option>
-                            <option value="7">laydate</option>
-                            <option value="8">laypage</option>
-                            <option value="9">flow</option>
-                            <option value="10">util</option>
-                            <option value="11">code</option>
-                            <option value="12">tree</option>
-                            <option value="13">layedit</option>
-                            <option value="14">nav</option>
-                            <option value="15">tab</option>
-                            <option value="16">table</option>
-                            <option value="17">select</option>
-                            <option value="18">checkbox</option>
-                            <option value="19">switch</option>
-                            <option value="20">radio</option>
+
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">收方账号</label>
+                    <label class="layui-form-label">收方账号<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="收方账号" class="layui-input">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收方名称<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行名称<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" >
+                    <div  class="layui-inline" style="width: 180px;">
+                    <label class="layui-form-label">收方省份<span style="color:red;">* </span></label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                    </div>
+                    <div  class="layui-inline" style="width: 180px;">
+                    <label class="layui-form-label">收方城市<span style="color:red;">* </span></label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                    <div  class="layui-inline" style="width: 180px;">
+                    <label class="layui-form-label">收方县区<span style="color:red;">* </span></label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                 </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">期望提交日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">实际提交日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date1" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">提交人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" name="faPiao" class="layui-textarea"></textarea>
                     </div>
                 </div>
             </div>
@@ -599,6 +627,8 @@
     </div>
 </form>-->
 
+
+
 <script src="/static/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
@@ -634,7 +664,22 @@
                 layedit.sync(editIndex);
             }
         });
-
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+        //向服务端发送删除指令
+                });
+            } else if(layEvent === 'edit'){
+                layer.msg('编辑操作');
+            }
+        });
         //监听指定开关
         form.on('switch(switchTest)', function(data){
             layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
