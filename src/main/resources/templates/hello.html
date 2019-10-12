@@ -295,11 +295,13 @@
             ,layer = layui.layer
             ,layedit = layui.layedit
             ,laydate = layui.laydate;
-
+        var nowdate=new Date();
         //日期
         laydate.render({
             elem: '#date',
-            type: 'datetime'
+            type: 'datetime',
+            value: nowdate,
+            isInitValue: true
         });
         laydate.render({
             elem: '#date1',

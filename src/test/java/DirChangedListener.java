@@ -1,5 +1,3 @@
-package com.example.demo.configurer;
-
 import org.apache.commons.io.filefilter.*;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
