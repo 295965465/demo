@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>德威付款页面</title>
@@ -10,19 +10,10 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <style>
         body{margin: 10px;}
-        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
 
     </style>
 </head>
 <body>
-
-<table class="layui-hide" id="demo" lay-filter="test"></table>
-
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">最小化</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">最大化</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">关闭</a>
-</script>
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>付款单</legend>
@@ -36,10 +27,17 @@
             <div class="layui-input-inline">
                 <select name="officeCode" lay-verify="required" lay-search="">
                     <option value="">直接选择或搜索选择</option>
-                    <option value="1">layer</option>
-                    <option value="2">form</option>
-                    <option value="3">layim</option>
-                    <option value="4">element</option>
+                    <option value="DWTJ" selected="">DWTJ</option>
+                    <option value="DWNB">DWNB</option>
+                    <option value="DWGP">DWGP</option>
+                    <option value="DWQD">DWQD</option>
+                    <option value="DWHZ">DWHZ</option>
+                    <option value="DWXM">DWXM</option>
+                    <option value="DWNT">DWNT</option>
+                    <option value="DWSA">DWSA</option>
+                    <option value="DWNJ">DWNJ</option>
+                    <option value="DWDL">DWDL</option>
+                    <option value="DWSH">DWSH</option>
 
 
                 </select>
@@ -77,7 +75,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">业务参考号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请填写业务参考号" class="layui-input">
+                        <input type="text" name="title" lay-verify="title"  autocomplete="off"  th:value="${yewu}" lay-filter="example" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -103,7 +101,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">付方账号<span style="color:red;">* </span></label>
                     <div class="layui-input-inline">
-                        <select name="paymentMethod" lay-verify="required" lay-search="">
+                        <select name="fufangzhanghao" lay-verify="required" lay-search="" lay-filter="fufangAccount">
                             <option value="1">layer</option>
                             <option value="2">form</option>
                             <option value="3">layim</option>
@@ -116,14 +114,14 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">账号名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" readonly="true" style="background-color: #f3f4f5"
+                        <input type="text" name="zhanghaomingcheng" readonly="true" style="background-color: #f3f4f5"
                                autocomplete="off" placeholder="德威国际货运代理（上海）有限公司" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">开户地区</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" readonly="true" style="background-color: #f3f4f5"
+                        <input type="text" name="kaihudif" readonly="true" style="background-color: #f3f4f5"
                                autocomplete="off" placeholder="上海市" class="layui-input">
                     </div>
                 </div>
@@ -137,7 +135,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">支付金额<span style="color:red;">* </span></label>
                         <div class="layui-input-inline">
-                            <input type="money" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
+                            <input type="money" name="zhifunumber" lay-verify="required|number" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -154,7 +152,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">业务类型</label>
                     <div class="layui-input-inline">
-                        <select name="paymentMethod" lay-verify="required" lay-search="">
+                        <select name="yewuleixing" lay-verify="required" lay-search="">
                             <option value="">直接选择或搜索选择</option>
                             <option value="N02031" selected="">直接支付</option>
                             <option value="N02030">支付</option>
@@ -166,7 +164,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">业务摘要</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="摘要" class="layui-input">
+                        <input type="text" name="yewuzhaiyao" autocomplete="off" placeholder="摘要" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -183,7 +181,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">客户ID<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <select name="paymentMethod1" lay-verify="required" lay-search="">
+                        <select name="gukeID" lay-verify="required" lay-search="">
                             <option value="">直接选择或搜索选择</option>
                             <option value="1">layer</option>
                             <option value="2">form</option>
@@ -197,44 +195,44 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">收方账号<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="shoufangzhanghao" autocomplete="off" placeholder="" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">收方名称<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="shoufangmingcheng" autocomplete="off" placeholder="" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">开户行名称<span style="color:red;">* </span></label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="kaihumingcheng" autocomplete="off" placeholder="" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">开户行地址</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="dizhi" autocomplete="off" placeholder="" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">收方省份<span style="color:red;">* </span></label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                            <input type="text" name="shengfeng" autocomplete="off" placeholder="" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">收方城市<span style="color:red;">* </span></label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                            <input type="text" name="city" autocomplete="off" placeholder="" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">收方县区<span style="color:red;">* </span></label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                            <input type="text" name="xianqu" autocomplete="off" placeholder="" class="layui-input">
                         </div>
                     </div>
                 </div>
@@ -248,14 +246,14 @@
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width: 100px">实际提交日期</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="date" id="date1" lay-verify="date" readonly="true" style="background-color: #f3f4f5" placeholder="yyyy-MM-dd"
+                            <input type="text" name="date1" id="date1"  readonly="true" style="background-color: #f3f4f5" placeholder="yyyy-MM-dd"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">提交人</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="title" autocomplete="off" placeholder="" readonly="true" style="background-color: #f3f4f5"  class="layui-input">
+                            <input type="text" name="tijiaoren" autocomplete="off" placeholder="" readonly="true" style="background-color: #f3f4f5"  class="layui-input">
                         </div>
                     </div>
                 </div>
@@ -263,7 +261,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" name="faPiao" class="layui-textarea"></textarea>
+                        <textarea placeholder="请输入内容" name="beizhu" class="layui-textarea"></textarea>
                     </div>
                 </div>
             </div>
@@ -274,20 +272,18 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
-
-<!-- 示例-970 -->
-<ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
 
 
 
 
 
 <script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/jquery/jquery-3.4.1.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     layui.use(['form', 'layedit', 'laydate'], function(){
@@ -322,60 +318,67 @@
                 /^[\S]{6,12}$/
                 ,'密码必须6到12位，且不能出现空格'
             ]
+            ,date: [
+                /^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1])) ([01][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9]/
+                ,'日期格式不正确'
+            ]
             ,content: function(value){
                 layedit.sync(editIndex);
             }
         });
-        //监听行工具事件
-        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                ,layEvent = obj.event; //获得 lay-event 对应的值
-            if(layEvent === 'detail'){
-                layer.msg('查看操作');
-            } else if(layEvent === 'del'){
-                layer.confirm('真的删除行么', function(index){
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-        //向服务端发送删除指令
-                });
-            } else if(layEvent === 'edit'){
-                layer.msg('编辑操作');
-            }
-        });
-        //监听指定开关
-        form.on('switch(switchTest)', function(data){
-            layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-                offset: '6px'
+        //初始化select
+        $(function () {
+              $.ajax({
+                url:"/user/initSelect",
+                method:"post",
+                dateType:"JSON",
+                success:function (date) {
+                    var html="";
+                    $.each(date,function (i,item) {
+                        html += "<option value='"+i+"'>"+item+"</option>";
+                    })
+                    console.log(html)
+                    $('select[name="fufangzhanghao"]').append(html);
+                    //form.render('select','fufangAccount');
+                    form.render('select')
+                }
+
             });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+
+        })
+        //监听select
+        form.on('select(fufangAccount)',function (date) {
+           console.log("aasdwdsa")
+
+
+
         });
 
         //监听提交
         form.on('submit(demo1)', function(data){
             layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
+            },function (index) {
+                $.ajax({
+                    url:"/user/mytest",
+                    method:"post",
+                    data:data.field,
+                    dateType:"JSON",
+                    success:function (dates) {
+                        layer.close(index)
+                    }
+
+
+
+                });
             })
+
             return false;
         });
 
-        //表单赋值
-        layui.$('#LAY-component-form-setval').on('click', function(){
-            form.val('example', {
-                "username": "贤心" // "name": "value"
-                ,"password": "123456"
-                ,"interest": 1
-                ,"like[write]": true //复选框选中状态
-                ,"close": true //开关状态
-                ,"sex": "女"
-                ,"desc": "我爱 layui"
-            });
-        });
 
-        //表单取值
-        layui.$('#LAY-component-form-getval').on('click', function(){
-            var data = form.val('example');
-            alert(JSON.stringify(data));
-        });
+
+
 
     });
 </script>
