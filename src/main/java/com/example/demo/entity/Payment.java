@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +26,6 @@ public class Payment  implements Serializable {
 	 * 付款单的内部编号
 	 */
    	@Column(name = "P_NO" )
-	@Id
 	private String pNo;
 
 	/**
@@ -429,11 +425,23 @@ F：快速
 	 */
    	@Column(name = "TOIBKN" )
 	private String toibkn;
-
+	/**
+	 * 返回错误
+	 */
+	@Column(name="WEB_SUB_RES")
+	private String webSubres;
 	/**
 	 * 发票关联 ID
 	 */
    	@Column(name = "INVOICE_INFOID" )
 	private String invoiceInfoid;
+	@Column(name = "CACCOUNT_ID" )
+	private Integer caccountid;
+    @Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MY_SEQUENCE")
+	@SequenceGenerator(name = "MY_SEQUENCE", sequenceName = "SEQ_M_CLEAR_HISTORY", initialValue = 0,
+			allocationSize = 1)
+	@Column(name = "PAYMENT_ID" )
+   	private  Integer pamentId;
 
 }

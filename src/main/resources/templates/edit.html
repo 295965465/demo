@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>单票展示页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+        body{margin: 10px;}
+
+    </style>
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>付款单</legend>
+</fieldset>
+<div class="layui-row">
+    <a href="/user/index" class="layui-btn">点击去主页</a>
+<div class="layui-col-xs10">
+<form class="layui-form" action="" lay-filter="myfrom">
+    <div class="layui-container">
+     <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">OFFICE&nbspCODE</label>
+            <div class="layui-input-inline">
+                <input type="text"  name="paymentid" th:value="${paymentID}" style="display: none"/>
+                <input type="text"  name="gukeID" th:value="${customerAccountID}" style="display: none"/>
+                <input type="text"  name="USERCOMPANYS" th:value="${payment.usercompany}" style="display: none"/>
+
+                <select name="officeCode"  lay-search="" lay-filter="officeCode">
+                    <option value="" SELECTED="">直接选择或搜索选择</option>
+
+
+
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline" style="width: 350px">
+            <div class="layui-input-inline">
+                <input type="text" name="officeDesc" readonly="true" style="background-color: #f3f4f5;width: 350px"
+                       autocomplete="off"  placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">结算方式</label>
+            <div class="layui-input-inline">
+                <select name="paymentMethod" lay-verify="required" lay-search="">
+                    <span th:if="${payment.AccId}=='N'">
+                    <option value="F">快速</option>
+                    <option value="N" selected="">普通</option>
+                    </span>
+                    <span th:if="${payment.AccId}!='N'">
+                    <option value="F" selected="">快速</option>
+                    <option value="N" >普通</option>
+                    </span>
+                </select>
+            </div>
+        </div>
+
+      </div>
+    </div>
+    <!--<div class="layui-fluid">-->
+    <div class="layui-row">
+            <div class="layui-col-md6">
+                <div class="layui-container">
+                    <label class="layui-form-label">付款单位</label>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付类别</label>
+                    <div class="layui-input-block">
+                        <select name="interest" lay-filter="aihao">
+                            <span th:if="${payment.Pertag}=='主营业务'">
+                                <option value="主营业务"selected="">主营业务</option>
+                            </span>
+
+                               <span th:if="${payment.Pertag}=='管理费用'">
+                                    <option value="管理费用"selected="">管理费用</option>
+                                    <option value="押金">押金</option>
+                                    <option value="往来">往来</option>
+                                    <option value="预付款">预付款</option>
+                               </span>
+
+                            <span th:if="${payment.Pertag}=='押金'">
+                                    <option value="管理费用">管理费用</option>
+                                    <option value="押金" selected="">押金</option>
+                                    <option value="往来">往来</option>
+                                    <option value="预付款">预付款</option>
+                            </span>
+
+                            <span th:if="${payment.Pertag}=='预付款'">
+                                    <option value="管理费用">管理费用</option>
+                                    <option value="押金">押金</option>
+                                    <option value="往来">往来</option>
+                                    <option value="预付款" selected="">预付款</option>
+                               </span>
+
+                            <span th:if="${payment.Pertag}=='往来'">
+                                    <option value="管理费用">管理费用</option>
+                                    <option value="押金">押金</option>
+                                    <option value="往来" selected="">往来</option>
+                                    <option value="预付款">预付款</option>
+                            </span>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">业务参考号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" lay-verify="title" readonly="true"  style="background-color: #f3f4f5" autocomplete="off"  th:value="${yewu}" lay-filter="example" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付银行<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <select name="bank" lay-filter="bank">
+                            <option value=""></option>
+                            <option value="CMB" selected="">招商银行</option>
+                            <option value="COB" >中国银行</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">付方账号<span style="color:red;">* </span></label>
+                    <div class="layui-input-inline">
+                        <select name="fufangzhanghao" lay-verify="required" lay-search=""  lay-filter="fufangAccount">
+                            <option th:value="${payment.payAccount}" th:text="${payment.payAccount}" ></option>
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">账号名称<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="zhanghaomingcheng" th:value="${payment.PayAccname}" readonly="true" style="background-color: #f3f4f5"
+                               autocomplete="off" placeholder="德威国际货运代理（上海）有限公司" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户地区<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="kaihudif" readonly="true" th:value="${payment.PayBankareaname}" style="background-color: #f3f4f5"
+                               autocomplete="off" placeholder="上海市" class="layui-input">
+                        <input type="text" name="kaihudicode" th:value="${payment.PayBankareaid}" readonly="true" style="display: none">
+                    </div>
+                </div>
+            <span th:if="${payment.pertag}=='主营业务'">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">发票信息<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="根据查询得到" readonly="true" th:text="${payment.InvoiceInfo}" style="background-color: #f3f4f5"name="faPiao" class="layui-textarea"></textarea>
+                    </div>
+                    <div class="layui-input-block" style="display: none">
+                        <textarea placeholder="" name="faPiaoID" th:text="${payment.InvoiceInfoid}" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </span>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">支付金额<span style="color:red;">* </span></label>
+                        <div class="layui-input-inline">
+                          <span th:if="${payment.pertag}=='主营业务'">
+                            <input type="money" name="zhifunumber" readonly="true" style="background-color: #f3f4f5" th:value="${payment.TraMoney}" lay-verify="required|number" autocomplete="off" class="layui-input">
+                          </span>
+                          <span th:if="${payment.pertag}!='主营业务'">
+                            <input type="money" name="zhifunumber" style="background-color: #f3f4f5" th:value="${payment.TraMoney}" lay-verify="required|number" autocomplete="off" class="layui-input">
+                          </span>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">币种名称</label>
+                        <div class="layui-input-inline">
+                            <select type="text" name="moneyname" lay-filter="moneyname" disabled="disabled" style="background-color: #f3f4f5" autocomplete="off" class="layui-input">
+                                <option value="RMB" SELECTED="">RMB</option>
+                                <option value="HKD">HKD</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+        <span th:if="${payment.pertag}=='主营业务'">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">业务类型</label>
+                    <div class="layui-input-inline">
+                        <select name="yewuleixing" lay-verify="required" lay-search="">
+                          <span th:if="${payment.OpSty}=='N02031'">
+
+                            <option value="N02031" selected="">直接支付</option>
+                            <option value="N02030">支付</option>
+                            <option value="N02040">集团支付</option>
+                            <option value="N02041">直接集团支付</option>
+                          </span>
+                            <span th:if="${payment.OpSty}=='N02030'">
+
+                            <option value="N02031" >直接支付</option>
+                            <option value="N02030" selected="">支付</option>
+                            <option value="N02040">集团支付</option>
+                            <option value="N02041">直接集团支付</option>
+                          </span>
+                            <span th:if="${payment.OpSty}=='N02040'">
+
+                            <option value="N02031" >直接支付</option>
+                            <option value="N02030" >支付</option>
+                            <option value="N02040" selected="">集团支付</option>
+                            <option value="N02041">直接集团支付</option>
+                          </span>
+                            <span th:if="${payment.OpSty}=='N02041'">
+
+                            <option value="N02031" >直接支付</option>
+                            <option value="N02030" >支付</option>
+                            <option value="N02040" >集团支付</option>
+                            <option value="N02041" selected="" >直接集团支付</option>
+                          </span>
+                        </select>
+                    </div>
+                </div>
+        </span>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">业务摘要</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="yewuzhaiyao" th:value="${payment.OpBrief}" autocomplete="off" placeholder="摘要" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用途<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <textarea name="yunTu" placeholder="请输入内容" lay-verify="required" th:text="${payment.Purpose}" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+
+                <label class="layui-form-label">收款单位</label>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户ID<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="gukeIDInput" th:value="${payment.Custoname}" autocomplete="off"  lay-verify="required" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收方账号<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="shoufangzhanghao" th:value="${payment.RecAccounts}" autocomplete="off" lay-verify="required" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">收方名称<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="shoufangmingcheng" th:value="${payment.RecName}" autocomplete="off"  lay-verify="required"placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行名称<span style="color:red;">* </span></label>
+                    <div class="layui-input-block">
+                        <input type="text" name="kaihumingcheng" autocomplete="off" th:value="${payment.RecObankname}" lay-verify="required" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="dizhi" autocomplete="off" th:value="${payment.RecObankaddress}" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">收方省份<span style="color:red;">* </span></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="shengfeng" autocomplete="off" th:value="${payment.RecProv}" lay-verify="required" placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">收方城市<span style="color:red;">* </span></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="city" autocomplete="off" lay-verify="required" th:value="${payment.RecCity}" placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">收方县区</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="xianqu" autocomplete="off"  th:value="${payment.RecCounty}" placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 100px">期望提交日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date" lay-verify="date" th:value="${payment.Checkindate}" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">实际提交日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="date1" id="date1"  readonly="true" th:value="${payment.dCommit}" style="background-color: #f3f4f5" placeholder="yyyy-MM-dd"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">提交人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="tijiaoren" autocomplete="off" placeholder="" th:value="${CWusercode}" readonly="true" style="background-color: #f3f4f5"  class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" name="beizhu" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--</div>-->
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit="" id="demo1"  lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+</div>
+<div class="layui-col-xs1">
+    <div class="layui-form-item">
+     &nbsp;
+    </div>
+    <div class="layui-form-item">
+        &nbsp;
+    </div>
+    <div class="layui-form-item">
+        &nbsp;
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <button data-type="offset" class="layui-btn layui-btn-normal">选择客户信息</button>
+        </div>
+    </div>
+
+</div>
+</div>
+<span th:if="${payment.pertag}=='主营业务'">
+     <div>
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">查询条件</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="seachparam" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="LAY-user-front-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn" id="getcheckd" data-type="getCheckData">获取选中行数据</button>
+                </div>
+
+            </div>
+        </div>
+        <table class="layui-hide" id="fapiaotable"></table>
+        <div id="pane_customer"style="display: none">
+            <table class="layui-hide" id="customertable"></table>
+            <script type="text/html" id="customertabletoolbar">
+                <div class="layui-form-item">
+                    <input type="text" name="customerseachparam" placeholder="请输入顾客ID" autocomplete="off"class="layui-input layui-input-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" id="customerSeach" lay-submit="" lay-filter="customerSeach">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                    <button class="layui-btn" id="getDataforp" lay-submit="" lay-filter="getDataforp">获取选中行数据</button>
+                </div>
+            </script>
+        </div>
+    </div>
+</span>
+
+
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/jquery/jquery-3.4.1.js"></script>
+<script type="text/javascript" src="/static/myjs/defindJs.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript"></script>
+<script th:inline="javascript">
+    console.log([[${payment.payAccount}]])
+    layui.use(['form', 'layedit', 'jquery','laydate','table','layer'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,$= layui.jquery
+            ,table=layui.table;
+        var nowdate=new Date();
+        //日期
+        laydate.render({
+            elem: '#date',
+            type: 'datetime',
+            value: nowdate,
+            isInitValue: true
+        });
+        laydate.render({
+            elem: '#date1',
+            type: 'datetime'
+        });
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 5){
+                    return '标题至少得5个字符啊';
+                }
+            }
+            ,pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+            ,date: [
+                /^(\d{4})[-\/](\d{1}|0\d{1}|1[0-2])([-\/](\d{1}|0\d{1}|[1-2][0-9]|3[0-1])) ([01][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9]/
+                ,'日期格式不正确'
+            ]
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+        //初始化select
+        $(function () {
+            var usercode=$('input[name="tijiaoren"]').val();
+
+            $.ajax({
+                url:"/user/initSelect_office",
+                data:{usercode:usercode},
+                method:"post",
+                dateType:"JSON",
+                success:function (date) {
+                    var html="";
+                    var jsonlength=$.getjsonlength(date);
+                    if (jsonlength==1){
+                        var companyName="";
+                        var companyCode="";
+                        $.each(date,function (i,item) {
+                            html += "<option value='"+item.companyName+"' selected=''>"+item.companyCode+"</option>";
+                            companyName=item.companyName;
+                            companyCode=item.companyCode;
+                        })
+                        $('input[name="officeDesc"]').val(companyName);
+                        $('select[name="officeCode"]').append(html).attr("disabled","disabled");
+                        $.ajax({
+                            url:"/user/initSelect",
+                            data:{OfficeCode:companyCode},
+                            method:"post",
+                            dateType:"JSON",
+                            success:function (date) {
+
+                                var html="";
+                                $.each(date,function (i,item) {
+                                    //console.log(item.accountNumber);
+                                    html += "<option value='"+item.accountNumber+"'>"+item.accountNumber+';'+item.accountName+';'+item.currType+"</option>";
+                                })
+                                $('select[name="fufangzhanghao"]').append(html);
+
+                                form.render('select')
+                            }
+
+                        });
+
+                    }else{
+                        $.each(date,function (i,item) {
+                            html += "<option value='"+item.companyName+"'>"+item.companyCode+"</option>";
+                        })
+                        $('select[name="officeCode"]').append(html);
+                    }
+
+
+
+                    form.render('select')
+                }
+
+
+            });
+        })
+
+        table.render({
+            elem: '#fapiaotable'
+            ,url:'/user/initfapiaoTable'
+            ,method:"Post"
+            ,cellMinWidth: 80
+            ,limits:[50, 100, 200, 500]
+            ,limit:50
+            ,cols: [ [
+                {type:'checkbox'}
+                ,{field:'traId',  title: 'traId', sort: true}
+                ,{field:'dateSourceType',  title: 'dateSourceType'}
+                ,{field:'complianceNumebr',  title: 'complianceNumebr', sort: true}
+                ,{field:'jobInvoiceNumebr',  title: 'jobInvoiceNumebr'}
+                ,{field:'accountCode',  title: 'accountCode', sort: true}
+                ,{field:'accountCompanyName',  title: 'accountCompanyName'}
+                ,{field:'postDate',  title: 'postDate', sort: true}
+                ,{field:'dueDate',  title: 'dueDate', sort: true}
+                ,{field:'outstandingAmount',  title: 'outstanding_AMOUNT'}
+                ,{field:'osTotal',  title: 'osTotal'}
+                ,{field:'osCurrency',  title: 'os_CURRENCY'}
+                ,{field:'localTotal',  title: 'local_TOTAL'}
+                ,{field:'loacaCurrency',  title: 'loacaCurrency'}
+
+            ] ]
+            //,page: true
+
+        });
+        //弹出层的table
+        table.render({
+            elem: '#customertable'
+            ,url:'/user/initSelect_gukeID'
+            ,method:"Post"
+            ,toolbar: '#customertabletoolbar'
+            ,defaultToolbar: ['filter',{ //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-tips'
+            }]//开启头部工具栏，并为其绑定左侧模板
+            ,cellMinWidth: 145
+            ,limits:[50, 100, 200, 500]
+            ,limit:50
+            ,cols: [ [
+                {type:'radio'}
+                ,{field:'customerId',  title: '顾客ID', sort: true}
+                ,{field:'bactive',  title: '活跃？',templet: function(d){
+                    var value=d.bactive=='1'?'活跃':'失效';
+                        return value;
+                    }}
+                ,{field:'currType',  title: '币别'}
+                ,{field:'bankName',  title: '开户行名称'}
+                ,{field:'accountName',  title: '收方名称'}
+                ,{field:'accountNumber',  title: '收方账号'}
+                ,{field:'provinceName',  title: '省'}
+                ,{field:'cityName',  title: '市'}
+                ,{field:'countryCode',  title: '县'}
+                ,{field:'createBy',  title: '创建人'}
+                ,{field:'createDate',  title: '创建时间'}
+
+            ] ]
+            //,page: true
+        });
+
+
+        form.on('select(gukeID)',function (date) {
+            var gukeID=$('select[name="gukeID"]').find("option:selected").text();
+
+
+
+        });
+
+        //监听select
+        form.on('select(fufangAccount)',function (date) {
+
+
+            var bizhong=$('select[name="fufangzhanghao"]').find("option:selected").val();
+            console.log(bizhong)
+            if (bizhong!="请选择"){
+                $.ajax({
+                    url:"/user/initSelect_cityAndName",
+                    data:{Accoun:bizhong},
+                    method:"post",
+                    dateType:"JSON",
+                    success:function (date) {
+                        console.log(date);
+                        $('input[name="zhanghaomingcheng"]').val(date.accountName);
+                        $('input[name="kaihudif"]').val(date.opAreaName);
+                        $('input[name="kaihudicode"]').val(date.opAreaNo);
+                    }
+
+                });
+            }
+
+        });
+        form.on('select(officeCode)',function (date) {
+            //console.log($(date.elem).find("option:selected").text()) //抓optiontext的
+            $('input[name="officeDesc"]').val(date.value);
+            var officeCode=$('select[name="officeCode"]').find("option:selected").text();
+            $('select[name="fufangzhanghao"]').html("<option value=''>请选择<option>");
+            form.render('select')
+            $.ajax({
+                url:"/user/initSelect",
+                data:{OfficeCode:officeCode},
+                method:"post",
+                dateType:"JSON",
+                success:function (date) {
+
+                    var html="";
+                    $.each(date,function (i,item) {
+
+                        html += "<option value='"+item.accountNumber+"'>"+item.accountNumber+';'+item.accountName+';'+item.currType+"</option>";
+                    })
+                    $('select[name="fufangzhanghao"]').append(html);
+                    form.render('select')
+                }
+
+            });
+
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            //console.log($('select[name="officeCode"]').find("option:selected").text())
+
+            var offcodes=$('select[name="officeCode"]').find("option:selected").text();
+            data.field.officeCode=offcodes,
+                layer.confirm('确认提交吗？'
+            ,function (index) {
+                $.ajax({
+                    url:"/user/mytest",
+                    method:"post",
+                    data:data.field,
+                    dateType:"JSON",
+                    success:function (dates) {
+
+
+                     /*   layer.close(index)
+                        layer.msg("保存成功,请去主页付款")
+                        $('#demo1').attr('disabled','disabled');
+                        //console.log("asdqweqsda")*/
+                        window.open("/user/index","_self");
+                    }
+
+
+
+                });
+            })
+
+            return false;
+        });
+        //搜索监听
+        form.on('submit(LAY-user-front-search)', function(data){
+            console.log($('input[name="seachparam"]').val())
+           var param= $('input[name="seachparam"]').val();
+            var index = layer.load({
+                type: 2,
+                shade: [0.9, '#393D49']
+
+            })
+            table.reload('fapiaotable',{
+                where: {
+                    param: param
+
+                },
+                done:function(res, curr, count){
+                    layer.close(index);
+                }
+            })
+        })
+        //搜索监听
+        form.on('submit(customerSeach)', function(data){
+            console.log($('input[name="customerseachparam"]').val())
+            var param= $('input[name="customerseachparam"]').val();
+            var index = layer.load({
+                type: 2,
+                shade: [0.9, '#393D49']
+
+            })
+            table.reload('customertable',{
+                where: {
+                    param: param
+
+                },
+                done:function(res, curr, count){
+                    layer.close(index);
+                }
+            })
+        })
+
+
+
+
+        form.on('submit(getDataforp)', function(data){ //获取选中数据
+            var checkStatus = table.checkStatus('customertable')
+                ,data = checkStatus.data;
+
+            //layer.alert(JSON.stringify(data));
+            //console.log(data[0].createDate)`
+            $('input[name="gukeID"]').val(data[0].customerAccountId);
+            $('input[name="gukeIDInput"]').val(data[0].customerId);
+            $('input[name="shoufangzhanghao"]').val(data[0].accountNumber);
+            $('input[name="shoufangmingcheng"]').val(data[0].accountName);
+            $('input[name="kaihumingcheng"]').val(data[0].bankName);
+            $('input[name="shengfeng"]').val(data[0].provinceName);
+            $('input[name="city"]').val(data[0].cityName);
+            $('input[name="xianqu"]').val(data[0].countryCode);
+
+
+        })
+        var active = {
+            offset: function(){
+                var that = this;
+                layer.open({
+                    type: 1,
+                    title: "获得客户账号信息",
+                    shade: [0],
+                    area: ['800px', '400px'],
+                    offset: 'auto', //右下角弹出
+                    maxmin: true,
+                    zIndex: layer.zIndex,
+                    content:$('#pane_customer')
+
+                });
+                table.resize('customertable');
+            },
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('fapiaotable')
+                    ,data = checkStatus.data
+                    ,myset= new Set();
+
+                //layer.alert(JSON.stringify(data));
+                //$('textarea[name="faPiao"]').html('')
+                //$('textarea[name="faPiaoID"]').html('')
+                var fapiaodate='';
+                var fapiaodateID='';
+                var loacaltotal=0;
+                $.each(data,function (i,item) {
+                    fapiaodate += item.complianceNumebr+";";
+                    fapiaodateID+=item.traId+";";
+                    loacaltotal+=Number(item.localTotal);
+                    myset.add(item.accountCode);
+
+                })
+
+                if (myset.size==1){
+                    $('textarea[name="faPiao"]').val(fapiaodate)
+                    $('textarea[name="faPiaoID"]').val(fapiaodateID)
+                    $('input[name="zhifunumber"]').val(loacaltotal.toFixed(2))
+                    var accountcode;
+                    myset.forEach(function (element, sameElement, myset) {
+                        accountcode=element;
+                    });
+
+                    $.ajax({
+                        url: "/user/initSelect_guke",
+                        data:{accountCode:accountcode,moneyname:"RMB"},
+                        method: "post",
+                        dateType: "JSON",
+                        success: function (date) {
+                          if (date!=''){
+                              console.log(date)
+                              $('input[name="gukeIDInput"]').val(date.customerAccountId);
+                              $('input[name="gukeIDInput"]').val(date.customerId);
+                              $('input[name="shoufangzhanghao"]').val(date.accountNumber);
+                              $('input[name="shoufangmingcheng"]').val(date.accountName);
+                              $('input[name="kaihumingcheng"]').val(date.bankName);
+                              $('input[name="shengfeng"]').val(date.provinceName);
+                              $('input[name="city"]').val(date.cityName);
+                              $('input[name="xianqu"]').val(date.countryCode);
+                          }else{
+                              $('input[name="gukeIDInput"]').val(accountcode);
+                          }
+                        }
+
+                    });
+
+                    /*对form表达的多个元素进行赋值
+                    form.val('myfrom', {
+                        "gukeID": "1" // "name": "value"
+                        ,"shoufangzhanghao": "123456"
+
+                    });*/
+                }else{
+                    layer.alert("只容许选一个accountcode")
+                }
+
+            }
+
+
+
+        };
+        $('.layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+
+
+    });
+</script>
+
+</body>
+</html>

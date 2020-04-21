@@ -1,0 +1,51 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "image": "/static/mystyles/dewell.jpeg",
+    "href": "/login/goShow"
+  },
+  "logoInfo": {
+    "title": "Dewell",
+    "image": "/static/mystyles/dewell.jpeg",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "主页模板",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "wenBank",
+              "href": "/user/index",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "Payable\nTransactions",
+              "href": "/ArAp/goAr",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "Receivable\nTransactions",
+              "href": "/ArAp/goAp",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        }
+
+      ]
+    }
+
+
+  ]
+}

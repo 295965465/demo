@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>交易信息查询页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+        body{margin: 10px;}
+
+    </style>
+</head>
+<body>
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">银行名称</label>
+                <div class="layui-input-block">
+                    <select name="traBankName" lay-verify="required" lay-filter="traBankName">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">账号</label>
+                <div class="layui-input-block">
+                    <select name="tranBankAccount" lay-verify="required" lay-search="tranBankAccount">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">检索时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" lay-verify="required" name="tratime" id="tratime" placeholder="交易时间范围 ">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">借贷</label>
+                <div class="layui-input-block">
+                    <select name="Ttype" lay-verify="required">
+                        <option value="0" selected="">全部</option>
+                        <option value="C" >收入</option>
+                        <option value="D" >支出</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="tra-search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+<div>
+<table class="layui-hide" id="MytradingTable" ></table>
+</div>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/jquery/jquery-3.4.1.js"></script>
+<script type="text/javascript" src="/static/myjs/defindJs.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript"></script>
+<script>
+    layui.use(['form', 'layedit', 'jquery','laydate','table','layer','util'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+            , $ = layui.jquery
+            , table = layui.table
+            , util = layui.util;
+        laydate.render({
+            elem: '#tratime'
+            ,range: true
+        });
+        //初始化select
+        $(function () {
+        $.ajax({
+            url: "/user/initSelect_traBankName",
+            method: "post",
+            dateType: "JSON",
+            success: function (date) {
+                var html = "";
+                $.each(date, function (i, item) {
+                    html += "<option value='" + item.bankNo+ "'>" + item.bankName + "</option>";
+                })
+                $('select[name="traBankName"]').append(html);
+
+                form.render('select')
+            }
+        });
+        });
+        form.on('select(traBankName)',function (date) {
+            console.log(date)
+            var trabankName=$('select[name="traBankName"]').find("option:selected").text();
+            $('select[name="tranBankAccount"]').html("<option value=''>请选择<option>");
+            form.render('select')
+            $.ajax({
+                url:"/user/initSelect_tranBankAccount",
+                data:{trabankName:trabankName},
+                method:"post",
+                dateType:"JSON",
+                success:function (date) {
+
+                    var html="";
+                    $.each(date,function (i,item) {
+
+                        html += "<option value='"+item.accountNumber+":"+item.opAreaNo+"'>"+item.accountNumber+';'+item.accountName+';'+item.currType+"</option>";
+                    })
+                    $('select[name="tranBankAccount"]').append(html);
+                    form.render('select')
+                }
+
+            });
+
+        });
+        table.render({
+            elem: '#MytradingTable'
+            ,url:'/user/initMytraingTable'
+            ,method:"Post"
+            ,cellMinWidth: 100
+            ,limits:[50, 100, 200, 500]
+            ,limit:50
+            ,initSort: {
+                field: 'yurref' //排序字段，对应 cols 设定的各字段名
+                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,cols: [ [
+                {type:'checkbox'}
+                ,{field:'yurref',  title: '业务参考号',width:140, sort: true}
+                ,{field:'myselfString',  title: '交易时间',width:190, sort: true}
+               /* ,{field:'etytim',  title: '交易时间',width:190, sort: true}*/
+                ,{field:'cRpybbk',  title: '收/付方开户地区',width:160}
+                ,{field:'rpynam',  title: '收/付方名称',width:330}
+                ,{field:'rpyacc',  title: '收/付方帐号',width:120}
+                ,{field:'rpybbn',  title: '收/付方开户行行号'}
+                ,{field:'rpybnk',  title: '收/付方开户行名', sort: true}
+                ,{field:'rpyadr',  title: '收/付方开户行名',width:100}
+                ,{field:'trscod',  title: '交易类型'}
+                ,{field:'naryur',  title: '摘要'}
+                ,{field:'trsamtd',  title: '借方金额',width:120}
+                ,{field:'trsamtc',  title: '贷方金额',width:130}
+                ,{field:'amtcdr',  title: '借贷标记',width:200}
+                ,{field:'refnbr',  title: '流水号',width:200}
+                ,{field:'reqnbr',  title: '流程实例号'}
+                ,{field:'busnam',  title: '业务名称'}
+                ,{field:'nusage',  title: '用途'}
+                ,{field:'busnar',  title: '业务摘要'}
+                ,{field:'infflg',  title: '信息标志'}
+                ,{field:'cAthflg',  title: '有否附件信息标志'}
+                ,{field:'chknbr',  title: '票据号'}
+                ,{field:'rsvflg',  title: '冲帐标志',width:330}
+                ,{field:'narext',  title: '扩展摘要'}
+                ,{field:'trsanl',  title: '交易分析码'}
+                ,{field:'refsub',  title: '商务支付订单号'}
+                ,{field:'trsblv',  title: '余额'}
+                ,{field:'frmcod',  title: '企业识别码'}
+
+
+
+            ] ]
+            ,page: true
+
+        });
+        //搜索监听
+        form.on('submit(tra-search)', function(data){
+            console.log($('input[name="seachparam"]').val())
+            var trabankName=$('select[name="traBankName"]').find("option:selected").val();
+            var tranBankAccount=$('select[name="tranBankAccount"]').find("option:selected").val()
+            var daterange= $('input[name="tratime"]').val();
+            var Ttype=$('select[name="Ttype"]').find("option:selected").val()
+
+            var index = layer.load({
+                type: 2,
+                shade: [0.9, '#393D49']
+
+            })
+            table.reload('MytradingTable',{
+                where: {
+                    param: trabankName
+                    ,daterange:daterange
+                    ,tranBankAccount:tranBankAccount
+                    ,Ttype:Ttype
+
+                },
+                done:function(res, curr, count){
+                    console.log(res.msg)
+                    layer.msg(res.msg);
+                    layer.close(index);
+
+                }
+            })
+        })
+
+
+    })
+</script>
+</body>
+</html>

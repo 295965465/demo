@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Payable Transactions</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <!-- 加载tableFilter的组件-->
+   <!--<link rel="stylesheet" href="/static/mystyles/tableFilter.css">-->
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+        body{margin: 10px;}
+
+    </style>
+
+
+</head>
+<body>
+<input type="text"  id="usercode" th:value="${session.userCode}" style="display: none"/>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">查询条件</label>
+            <div class="layui-input-block">
+                <input type="text" name="seachparam" placeholder="AccountCode" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <select name="seachstatus" lay-verify="" lay-search="">
+                            <option value="" selected="">请选择</option>
+                            <option value="false">false</option>
+                            <option value="true">true</option>
+            </select>
+        </div>
+        <div class="layui-inline">
+
+                <input type="text" class="layui-input" name="test15" id="test15" placeholder="PostDate时间范围">
+
+        </div>
+        <div class="layui-inline">
+
+
+                <input type="text" class="layui-input" name="test16" id="test16" placeholder=" InvoiceDate时间范围 ">
+
+        </div>
+
+
+        <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="LAY-user-front-search1">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+        </div>
+
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">明细</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down">核销</a>
+
+</script>
+    <table class="layui-hide" id="MyArTables" lay-filter="MyARTable"></table>
+
+    <script type="text/html" id="MyPamenttoolbar">
+
+             <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+             <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+             <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+
+
+    </script>
+
+
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/jquery/jquery-3.4.1.js"></script>
+<script type="text/javascript" src="/static/myjs/defindJs.js"></script>
+<!--HTTP地址是这样引入js文件 -->
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript"></script>
+<script th:inline="javascript">
+    layui.use(['form', 'layedit', 'jquery','laydate','table','layer','util'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,$= layui.jquery
+            ,table=layui.table
+            ,util = layui.util;
+
+        table.render({
+            elem: '#MyArTables'
+            ,url:'/ArAp/initArAPTable'
+            ,where:{status:'AR'}
+            ,method:"Post"
+            ,toolbar: '#MyPamenttoolbar' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print']
+            ,cellMinWidth: 100
+            ,limits:[50, 100, 200, 500]
+            ,limit:50
+            ,height: 'full-100'
+            ,initSort: {
+                field: 'dueDate' //排序字段，对应 cols 设定的各字段名
+                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,cols: [ [
+                {type:'checkbox'}
+                ,{field:'soNo',  title: 'soNo',width:140}
+                ,{field:'mbl',  title: 'mbl',}
+                ,{field:'invoiceNo',  title: 'invoiceNo',width:160}
+                ,{field:'tranNo',  title: 'tranNo',width:330}
+                ,{field:'accountCode',  title: 'accountCode',width:120}
+                ,{field:'accountCompanyName',  title: 'accountCompanyName'}
+                ,{field:'postDate',  title: 'postDate',width:180,templet:function(d)
+                    {return util.toDateString(d.postDate, 'yyyy-MM-dd HH:mm:ss'); }}
+                ,{field:'invoiceDate',  title: 'invoiceDate',width:180,templet:function(d)
+                    {return util.toDateString(d.invoiceDate, 'yyyy-MM-dd HH:mm:ss'); }}
+                ,{field:'dueDate',  title: 'dueDate',width:180,templet:function(d)
+                    {return util.toDateString(d.dueDate, 'yyyy-MM-dd HH:mm:ss'); }}
+                ,{field:'transactionType',  title: 'transactionType'}
+                ,{field:'oJobInvoiceNumber',  title: 'oJobInvoiceNumber',width:120}
+                ,{field:'oNumber',  title: 'oNumber',width:130}
+                ,{field:'fullyPaidDate',  title: 'fullyPaidDate',width:180,templet:function(d)
+                    {return util.toDateString(d.fullyPaidDate, 'yyyy-MM-dd HH:mm:ss'); }}
+                ,{field:'localToTal',  title: 'localToTal',width:200}
+                ,{field:'localCurrency',  title: 'localCurrency'}
+                ,{field:'outstandingAmount',  title: 'outstandingAmount'}
+                ,{field:'osCurreny',  title: 'osCurreny'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
+            ] ]
+            ,page: true
+
+        });
+        //日期时间范围
+        laydate.render({
+            elem: '#test15'
+            ,type: 'datetime'
+            ,range: true
+        });
+
+        laydate.render({
+            elem: '#test16'
+            ,type: 'datetime'
+            ,range: true
+
+        });
+        table.on('toolbar(MyARTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var roldids=[[${session.roleid}]];
+            
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+
+            };
+
+        });
+        form.on('submit(LAY-user-front-search1)', function(data){
+            var param= $('input[name="seachparam"]').val();
+
+            var seachstatus= $('select[name="seachstatus"]').find("option:selected").val()
+
+            //var seachoffice=$('input[name="seachoffice"]').val();
+            var postdatetiemRange=$('input[name="test15"]').val();
+            var invoicedatetiemRange=$('input[name="test16"]').val();
+           console.log(param+"."+seachstatus+"."+"."+postdatetiemRange+"."+invoicedatetiemRange)
+            var index = layer.load({
+                type: 2,
+                shade: [0.9, '#393D49']
+
+            })
+            table.reload('MyArTables',{
+                where: {
+                    param:param,
+
+                    seachstatus:seachstatus,
+                    postdatetiemRange:postdatetiemRange,
+                    invoicedatetiemRange:invoicedatetiemRange
+
+                },
+                done:function(res, curr, count){
+                    layer.close(index);
+                }
+            })
+        })
+
+
+        //监听行工具事件
+        table.on('tool(MyARTable)', function(obj){
+            var data = obj.data;
+            var TraID=data.traId;
+            var roldids=[[${session.roleid}]]
+            if(obj.event === 'edit'){
+
+                layer.open({
+                    title: 'Ar明细',
+                    type: 2,
+                    skin: 'layui-layer-molv',
+                    shade: [0],
+                    area: ['800px', '600px'],
+                    //btn: ['导出'],
+                    content:"/ArAp/goArApDetail/"+TraID
+                })
+
+
+            }else if (obj.event === 'down') {
+                layer.msg("正在开发")
+
+
+            }
+        });
+
+
+
+        var active = {
+
+
+
+
+        };
+        $('.layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+
+
+    });
+</script>
+
+
+</body>
+</html>

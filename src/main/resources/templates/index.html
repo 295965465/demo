@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>德威付款数据表格</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <!-- 加载tableFilter的组件-->
+   <!--<link rel="stylesheet" href="/static/mystyles/tableFilter.css">-->
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style>
+        body{margin: 10px;}
+
+    </style>
+
+
+</head>
+<body>
+<input type="text"  id="usercode" th:value="${session.userCode}" style="display: none"/>
+<div class="layui-form layui-card-header layuiadmin-card-header-auto">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">查询条件</label>
+            <div class="layui-input-block">
+                <input type="text" name="seachparam" placeholder="付方账号" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-inline">
+
+                <input type="text" name="seachfapiao" placeholder="发票号" autocomplete="off" class="layui-input">
+
+        </div>
+        <div class="layui-inline">
+            <select name="seachstatus" lay-verify="" lay-search="">
+                            <option value="" selected="">请选择</option>
+
+                            <option value="0">未支付</option>
+                            <option value="5">已支付</option>
+                            <option value="8">已核销</option>
+            </select>
+
+              <!--  <input type="text" name="seachstatus" placeholder="支付状态" autocomplete="off" class="layui-input">-->
+
+        </div>
+        <div class="layui-inline">
+
+
+                <input type="text" name="seachoffice" placeholder="Office" autocomplete="off" class="layui-input">
+
+        </div>
+        <div class="layui-inline">
+
+                <input type="text" name="seachpono" placeholder="业务参考号" autocomplete="off" class="layui-input">
+
+        </div>
+        <div class="layui-inline">
+
+                <input type="text" class="layui-input" name="test15" id="test15" placeholder=" 预计开票时间范围 ">
+        </div>
+
+
+        <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="LAY-user-front-search1">
+                <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+        </div>
+
+    </div>
+</div>
+<div style="display: none" id="panel_show">
+    <form class="layui-form" action="" lay-filter="showfrom">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Branch</label>
+                <div class="layui-input-block">
+                <input type="text" name="BranchCode" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+            </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Department</label>
+                <div class="layui-input-block">
+                    <input type="text" name="" placeholder="FIN" autocomplete="off" readonly="true"  style="background-color: #f3f4f5"class="layui-input">
+                </div>
+            </div>
+            </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Payment Date</label>
+                <div class="layui-input-block">
+                    <input type="text" name="paymentDate" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Post Date</label>
+                <div class="layui-input-block">
+                    <input type="text" name="PostDate" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Account Code</label>
+                <div class="layui-input-block">
+                    <input type="text" name="AccountCode" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Account Name</label>
+                <div class="layui-input-block">
+                    <input type="text" name="AccountName" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">Bank Account</label>
+                <div class="layui-input-block">
+                    <input type="text" name="BankAccount" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">Reference Number</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ReferenceNumber" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">金额</label>
+                <div class="layui-input-block">
+                    <input type="text" name="money" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">币别</label>
+                <div class="layui-input-block">
+                    <input type="text" name="moneyType" placeholder="" autocomplete="off" readonly="true" style="background-color: #f3f4f5" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<script type="text/html" id="barDemo">
+    {{#  if(d.dcommit ==null){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">付款</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down">核销</a>
+    {{#  } }}
+    {{#  if(d.dcommit !=null){ }}
+   <!-- <a class="layui-btn layui-btn-disabled layui-btn-xs" >编辑</a>
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" >付款</a>-->
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down">核销</a>
+    {{#  } }}
+
+</script>
+    <table class="layui-hide" id="MyPamentTable" lay-filter="MyPamentTable"></table>
+
+    <script type="text/html" id="MyPamenttoolbar">
+
+             <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+             <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+             <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+
+
+    </script>
+
+
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/jquery/jquery-3.4.1.js"></script>
+<script type="text/javascript" src="/static/myjs/defindJs.js"></script>
+<!--<script type="text/javascript" src="/static/myjs/tableFilter.js"></script>-->
+<!--HTTP地址是这样引入js文件 -->
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script type="text/javascript"></script>
+<script th:inline="javascript">
+    layui.use(['form', 'layedit', 'jquery','laydate','table','layer','util'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,$= layui.jquery
+            ,table=layui.table
+            ,util = layui.util
+            ,tableFilter=layui.tableFilter;
+
+        table.render({
+            elem: '#MyPamentTable'
+            ,url:'/user/initMyPamentTable'
+            ,method:"Post"
+            ,toolbar: '#MyPamenttoolbar' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '新增主营业务'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-add-1'
+            }, { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '新增非主营业务'
+                ,layEvent: 'feizhuyintips'
+                ,icon: 'layui-icon-add-circle'
+            }, { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '交易信息查询'
+                ,layEvent: 'TRA_TIPS2'
+                ,icon: 'layui-icon-app'
+            }]
+            ,cellMinWidth: 100
+            ,limits:[50, 100, 200, 500]
+            ,limit:50
+            ,height: 'full-100'
+            ,initSort: {
+                field: 'pno' //排序字段，对应 cols 设定的各字段名
+                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            }
+            ,cols: [ [
+                {type:'checkbox'}
+                ,{field:'awec',  title: '支付状态',width:140,templet: function(d){
+                        var value;
+                     if(d.dcheckmark==8){
+                            value='<span style="color: #454fcc;">已核销</span>';
+                     }else if (d.dcommit!=null){
+                        value='<span style="color: #12cc3e;">已付款</span>';
+                    }else{
+                        value='<span style="color: #cc3630;">未付款</span>';
+                    }
+
+                        return  value;
+                    }}
+                ,{field:'pno',  title: '业务参考号',width:140}
+                ,{field:'opSty',  title: '业务类型',}
+                //,{field:'opRefno',  title: 'opRefno',width:140}
+                ,{field:'payAccount',  title: '付方账号',width:160}
+                ,{field:'payAccname',  title: '账号名称',width:330}
+                ,{field:'payBankareaname',  title: '开户地区',width:120}
+                ,{field:'traMoney',  title: '支付金额'}
+                ,{field:'monType',  title: '币种'}
+                ,{field:'accName',  title: '结算方式',width:100}
+                ,{field:'purpose',  title: '用途'}
+                ,{field:'opBrief',  title: '摘要'}
+                ,{field:'custoname',  title: '客户ID',width:120}
+                ,{field:'recAccounts',  title: '收方账号',width:130}
+                ,{field:'recName',  title: '收方名称',width:200}
+                ,{field:'recObankname',  title: '开户行名称',width:200}
+                ,{field:'recObankaddress',  title: '开户行地址'}
+                ,{field:'recCounty',  title: '收方县区'}
+                ,{field:'bankId',  title: '支付银行',templet:function (d) { var value=d.bankId='CMB'?'招商银行':'中国银行'; return value  }}
+                ,{field:'recProv',  title: '收方省份'}
+                ,{field:'recCity',  title: '收方城市'}
+                ,{field:'pertag',  title: '支付类别'}
+               // ,{field:'invoiceInfoid',  title: 'invoiceInfoid'}
+                ,{field:'invoiceInfo',  title: '发票号',width:330}
+                ,{field:'checkindate',  title: '期望付款时间',width:190,templet:function(d)
+                    {return util.toDateString(d.checkindate, 'yyyy-MM-dd HH:mm:ss'); }}
+                ,{field:'dcommit',  title: '提交时间',width:190,templet:function(d)
+                    {return d.dcommit!=null?util.toDateString(d.dcommit, 'yyyy-MM-dd HH:mm:ss'):''; }}
+                ,{field:'webSubres',  title: '提交信息',width:330}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
+
+            ] ]
+            ,page: true
+
+        });
+        /*tableFilter.render({
+            'elem' : '#MyPamentTable',//table的选择器
+            'mode' : 'local',//过滤模式
+            'filters' : [
+                {field:'invoiceInfo',  type: 'input'}
+                ,{field:'payAccount',  type: 'checkbox'}
+                ,{field:'awec',  type: 'radio'}
+                ],//过滤项配置
+            'done': function(filters){
+                //结果回调
+            }
+        });*/
+        //日期时间范围
+        laydate.render({
+            elem: '#test15'
+            ,type: 'datetime'
+            ,range: true
+        });
+        table.on('toolbar(MyPamentTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var roldids=[[${session.roleid}]];
+            
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+
+                    if (roldids.indexOf(105761)>-1||roldids.indexOf(92837)>-1){
+                        var url="/user/hello?name="+$("#usercode").val()+"&modeType=1";
+                        //window.open(url)
+                        window.location.href=url;
+
+                    }else{
+                        layer.msg("没有新建权限")
+                    };
+                    break;
+                case 'feizhuyintips':
+
+                    if (roldids.indexOf(105761)>-1||roldids.indexOf(92837)>-1){
+                        var url="/user/hello?name="+$("#usercode").val()+"&modeType=2";
+                        //window.open(url)
+                        window.location.href=url;
+
+
+                    }else{
+                        layer.msg("没有新建权限")
+                    };
+                    break;
+                case 'TRA_TIPS2':
+
+                    if (roldids.indexOf(105801)>-1||roldids.indexOf(92837)>-1){
+                        var url="/user/trading";
+                        window.open(url)
+                       // window.location.href=url;
+
+                    }else{
+                        layer.msg("没有查看权限")
+                    };
+                    break;
+
+            };
+
+        });
+        form.on('submit(LAY-user-front-search1)', function(data){
+            var param= $('input[name="seachparam"]').val();
+            var seachfapiao=$('input[name="seachfapiao"]').val();
+            var seachstatus= $('select[name="seachstatus"]').find("option:selected").val()
+            var seachoffice=$('input[name="seachoffice"]').val();
+            var seachpono=$('input[name="seachpono"]').val();
+            var datetiemRange=$('input[name="test15"]').val();
+
+            var index = layer.load({
+                type: 2,
+                shade: [0.9, '#393D49']
+
+            })
+            table.reload('MyPamentTable',{
+                where: {
+                    param: param,
+                    daterange:datetiemRange,
+                    seachpono:seachpono,
+                    seachfapiao:seachfapiao,
+                    seachstatus:seachstatus,
+                    seachoffice:seachoffice
+
+                },
+                done:function(res, curr, count){
+                    layer.close(index);
+                }
+            })
+        })
+
+
+        //监听行工具事件
+        table.on('tool(MyPamentTable)', function(obj){
+            var data = obj.data;
+            var pamentID=data.pamentId;
+            //console.log(pamentID)
+            var roldids=[[${session.roleid}]]
+            if(obj.event === 'del'){
+
+                if (data.dcommit==null){
+                    if (roldids.indexOf(105762)>-1||roldids.indexOf(92837)>-1){
+                        layer.confirm('你确定好去付款吗？', function(index){
+                            var indexs = layer.load({
+                                type: 2,
+                                shade: [0.9, '#393D49']
+
+                            })
+                            $.ajax({
+                                url:"/user/kaipai",
+                                data:{paymentId:pamentID},
+                                method:"post",
+                                dateType:"JSON",
+                                success:function (date) {
+                                    if (date=="SUCCESS"){
+                                        table.reload('MyPamentTable');
+                                    }else{
+                                        var reg = new RegExp( '%3A\+' , "g" )
+                                        layer.msg(decodeURI(date).replace(reg,":"));
+                                    }
+                                    layer.close(index)
+                                    layer.close(indexs);
+                                }
+
+                            });
+
+                        });
+                    } else{
+                        layer.msg("没有付款权限")
+                    }
+
+                }else{
+                    layer.msg("只能操作未付款的")
+                }
+
+            } else if(obj.event === 'edit'){
+                if (data.dcommit==null){
+                 if(roldids.indexOf(105761)>-1||roldids.indexOf(92837)>-1){
+                     var url="/user/edit?name="+$("#usercode").val()+"&paymentid="+pamentID;
+                     //window.open(url)
+                     //window.location.href=url;
+                     window.open(url,"_self");
+                    /* if (data.pertag=='主营业务'){
+
+
+                       }else{
+                           layer.msg("非主营的正在完成")
+                       }*/
+
+
+                } else{
+                    layer.msg("没有编辑权限")
+                }
+                }else{
+                    layer.msg("只能操作未付款的")
+                }
+
+
+
+            }else if (obj.event === 'down') {
+
+                //console.log(roldids.indexOf(92837));
+                if (data.dcommit==null){
+                    layer.msg("只能操作已经付款的")
+                }else{
+                    console.log(data.invoiceInfo)
+                    if (data.invoiceInfo!=null){
+
+
+                    if (roldids.indexOf(105801)>-1||roldids.indexOf(92837)>-1){
+                        layer.open({
+                            title:'产生CargoWise核销文件',
+                            type:1,
+                            skin: 'layui-layer-molv',
+                            shade: [0],
+                            area: ['660px', '450px'],
+                            btn:['导出'],
+                            content:$('#panel_show'),
+                            success:function(layero, index){
+                                form.val('showfrom', {
+                                    "BranchCode": data.usercompany // "name": "value"
+                                    ,"paymentDate":util.toDateString(data.checkindate, 'yyyyMMdd')
+                                    ,"PostDate": util.toDateString(data.dcommit, 'yyyyMMdd')
+                                    ,"AccountCode": data.custoname
+                                    ,"AccountName": data.recName
+                                    ,"BankAccount": data.payAccname
+                                    ,"ReferenceNumber": data.pno
+                                    ,"money": data.traMoney
+                                    ,"moneyType": data.monType
+                                });
+                                form.render();
+                            },
+                            yes: function(index, layero){
+                                window.open("/user/DownLaod?paymentid="+pamentID)
+                                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                            }
+                        });
+
+                    }else{
+                        layer.msg("你没有权限去核销")
+                    }
+                    }else{
+                        layer.msg("非主营不需要去核销")
+                    }
+                }
+
+            }
+        });
+
+
+
+        var active = {
+
+
+
+
+        };
+        $('.layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+
+
+    });
+</script>
+
+
+</body>
+</html>

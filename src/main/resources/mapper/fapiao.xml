@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.fapiaoMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.fapiaoTable">
+
+            <!--
+              WARNING - @mbg.generated
+            -->
+            <id column="TRA_ID" jdbcType="DECIMAL" property="traId" />
+            <result column="DATASOURCE_TYPE" jdbcType="VARCHAR" property="dateSourceType" />
+            <result column="COMPLIANCE_NUMBER" jdbcType="VARCHAR" property="complianceNumebr" />
+            <result column="JOBINVOICENUMBER" jdbcType="VARCHAR" property="jobInvoiceNumebr" />
+            <result column="ACCOUNT_CODE" jdbcType="VARCHAR" property="accountCode" />
+            <result column="ACCOUNT_COMPANYNAME" jdbcType="VARCHAR" property="accountCompanyName" />
+            <result column="DUEDATE" jdbcType="TIMESTAMP" property="DueDate" />
+            <result column="POSTDATE" jdbcType="VARCHAR" property="postDate" />
+            <result column="OS_TOTAL" jdbcType="VARCHAR" property="osTotal" />
+            <result column="LOCAL_CURRENCY" jdbcType="VARCHAR" property="loacaCurrency" />
+            <result column="rownum_" jdbcType="DECIMAL" property="rownum_" />
+            <result column="OUTSTANDING_AMOUNT" jdbcType="VARCHAR" property="outstandingAmount" />
+            <result column="OS_CURRENCY" jdbcType="VARCHAR" property="osCurrency" />
+            <result column="LOCAL_TOTAL" jdbcType="VARCHAR" property="localTotal" />
+
+    </resultMap>
+</mapper>

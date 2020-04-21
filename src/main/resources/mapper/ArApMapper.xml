@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ArApMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.ArApEntity">
+    <id column="TRA_ID" jdbcType="VARCHAR" property="traId" />
+    <result column="SO_NO" jdbcType="VARCHAR" property="soNo" />
+    <result column="MBL_NO" jdbcType="VARCHAR" property="mbl" />
+    <result column="INVOICE_NO" jdbcType="VARCHAR" property="invoiceNo" />
+    <result column="TRAN_NO" jdbcType="VARCHAR" property="tranNo" />
+    <result column="ACCOUNT_CODE" jdbcType="VARCHAR" property="accountCode" />
+    <result column="ACCOUNT_COMPANYNAME" jdbcType="VARCHAR" property="accountCompanyName" />
+    <result column="POSTDATE" jdbcType="DATE" property="postDate" />
+    <result column="INVOICE_DATE" jdbcType="DATE" property="invoiceDate" />
+    <result column="DUEDATE" jdbcType="DATE" property="dueDate" />
+    <result column="TRANSACTIONTYPE" jdbcType="VARCHAR" property="transactionType" />
+    <result column="O_JOBINVOICENUMBER" jdbcType="VARCHAR" property="oJobInvoiceNumber" />
+    <result column="O_NUMBER" jdbcType="VARCHAR" property="oNumber" />
+    <result column="FULLY_PAID_DATE" jdbcType="DATE" property="fullyPaidDate" />
+    <result column="LOCAL_TOTAL" jdbcType="VARCHAR" property="localToTal" />
+    <result column="LOCAL_CURRENCY" jdbcType="VARCHAR" property="localCurrency" />
+    <result column="OS_TOTAL" jdbcType="VARCHAR" property="osTotal" />
+    <result column="OUTSTANDING_AMOUNT" jdbcType="VARCHAR" property="outstandingAmount" />
+    <result column="OS_CURRENCY" jdbcType="VARCHAR" property="osCurreny" />
+
+
+  </resultMap>
+  <select id="getAllArAp" resultMap="BaseResultMap">
+    select distinct b.tra_id,bz.so_no,bz.mbl_no,b.jobinvoicenumber as Invoice_no,b.compliance_number as tran_no,b.account_code,b.account_companyname,b.postdate,b.transactiondate as invoice_date,
+                b.duedate,b.transactiontype,b.o_jobinvoicenumber,b.o_number,b.fully_paid_date,b.local_total,b.local_currency,b.os_total,b.outstanding_amount,b.os_currency
+  from M_ACCOUNTING_TRANSACTION b,M_ACCOUNTING_CHARGES a
+  left join (select job.job_no,so.mbl_no,so.so_no from job_se_head job,job_se_shipping_order so where job.job_id=so.job_id) bz on a.JOB_NUMBER=bz.job_no
+ where a.tra_id=b.tra_id
+   <if test="ledger!=null and ledger!=''">
+   and b.ledger=#{ledger}
+   </if>
+   and NVL(b.web_bank,0) != 3
+   <if test="branchCode !=null">
+   and a.branch_code in
+       <foreach collection="branchCode" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                         </foreach>
+    </if>
+    <if test="seachstatus !=null and seachstatus != ''">
+   and b.is_cancelled =#{seachstatus}
+    </if>
+   <if test="postDate !=null ">
+     and b.POSTDATE  between #{postDate} and #{postEndDate}
+   </if>
+    <if test="transactiondate !=null">
+      and b.TRANSACTIONDATE between  #{transactiondate} and #{transactionEnddate}
+    </if>
+    <if test="accountCode !=null and accountCode !='' ">
+      and b.ACCOUNT_CODE=#{accountCode}
+    </if>
+
+
+  </select>
+</mapper>

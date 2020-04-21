@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://git.io/logback.xsd">
+
+    <springProperty scope="context" name="LOG_HOME" source="logPath"/>
+    <springProperty scope="context" name="EXCEPTION_LOCATION" source="exception-location"/>
+
+    <!--打印到控制台-->
+    <appender name="consoleLog"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d [%thread] %-5level %logger{50}- %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <!-- 配置info日志 -->
+    <appender name="fileInfoLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                %d [%thread] %-5level %logger{50}- %msg%n
+            </pattern>
+        </encoder>
+        <!-- 设置滚动策略 -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 路径 -->
+            <fileNamePattern>
+                ${LOG_HOME}/info.%d.log
+            </fileNamePattern>
+            <!--文件保留的天数-->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 配置error日志 -->
+    <appender name="fileErrorLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %d [%thread] %-5level %logger{50}- %msg%n
+            </pattern>
+        </encoder>
+        <!-- 设置滚动策略 -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 路径 -->
+            <fileNamePattern>
+                ${LOG_HOME}/error.%d.log
+            </fileNamePattern>
+            <!--文件保留的天数-->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+
+    </appender>
+
+    <!--发生异常是发送邮件-->
+    <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+        <!--smtp 服务器-->
+        <smtpHost>fastsmtp.qiye.163.com</smtpHost>
+        <!--port-->
+        <!--<smtpPort></smtpPort>-->
+        <!--发件人的邮箱-->
+        <username>itsystem@de-well.com</username>
+        <!--发件人的邮箱密码-->
+        <password>@dewelli6</password>
+        <SSL>false</SSL>
+        <!--是否异步-->
+        <asynchronousSending>false</asynchronousSending>
+        <!-- 发给谁的邮件列表，多个人用逗号分隔 -->
+        <to>SenCheng.Zhang@sh.de-well.com</to>
+        <!--发件人，添加邮箱和上面的username保持一致-->
+        <from>itsystem@de-well.com</from>
+        <subject>${EXCEPTION_LOCATION}</subject>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d - %msg%n</pattern>
+        </layout>
+        <!--过滤器-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+
+    <root level="INFO">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileErrorLog"/>
+        <!--TODO 本地开发暂停邮件提醒功能-->
+        <appender-ref ref="EMAIL"/>
+    </root>
+</configuration>
