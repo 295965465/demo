@@ -52,7 +52,34 @@
     <if test="accountCode !=null and accountCode !='' ">
       and b.ACCOUNT_CODE=#{accountCode}
     </if>
+      <if test="invoiceNo !=null and invoiceNo !='' ">
+          and b.jobinvoicenumber=#{invoiceNo}
+      </if>
 
 
   </select>
+    <select id="getAccountCode" resultMap="BaseResultMap">
+
+SELECT distinct a.account_code,a.account_companyname
+  FROM M_ACCOUNTING_TRANSACTION a,M_ACCOUNTING_CHARGES b where a.tra_id=b.tra_id and
+  (a.jobinvoicenumber like '%'||#{seachparam}||'%'   or b.job_number like '%'||#{seachparam}||'%')
+
+
+
+    </select>
+<select id="getEntityByTraids" resultMap="BaseResultMap">
+
+    select distinct b.tra_id,bz.so_no,bz.mbl_no,b.jobinvoicenumber as Invoice_no,b.compliance_number as tran_no,b.account_code,b.account_companyname,b.postdate,b.transactiondate as invoice_date,
+    b.duedate,b.transactiontype,b.o_jobinvoicenumber,b.o_number,b.fully_paid_date,b.local_total,b.local_currency,b.os_total,b.outstanding_amount,b.os_currency
+    from M_ACCOUNTING_TRANSACTION b,M_ACCOUNTING_CHARGES a
+    left join (select job.job_no,so.mbl_no,so.so_no from job_se_head job,job_se_shipping_order so where job.job_id=so.job_id) bz on a.JOB_NUMBER=bz.job_no
+    where a.tra_id=b.tra_id
+    <if test="traids !=null">
+        and a.tra_id in
+        <foreach collection="traids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+
+</select>
 </mapper>

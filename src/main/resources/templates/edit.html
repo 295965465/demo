@@ -377,6 +377,7 @@
             <script type="text/html" id="customertabletoolbar">
                 <div class="layui-form-item">
                     <input type="text" name="customerseachparam" placeholder="请输入顾客ID" autocomplete="off"class="layui-input layui-input-inline">
+                    <input type="text" name="customerseachparam1" placeholder="请输入收方名称" autocomplete="off"class="layui-input layui-input-inline">
                     <button class="layui-btn layuiadmin-btn-useradmin" id="customerSeach" lay-submit="" lay-filter="customerSeach">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
                     </button>
@@ -666,6 +667,7 @@
         form.on('submit(customerSeach)', function(data){
             console.log($('input[name="customerseachparam"]').val())
             var param= $('input[name="customerseachparam"]').val();
+            var param1= $('input[name="customerseachparam1"]').val();
             var index = layer.load({
                 type: 2,
                 shade: [0.9, '#393D49']
@@ -673,7 +675,8 @@
             })
             table.reload('customertable',{
                 where: {
-                    param: param
+                    param: param,
+                    param1:param1
 
                 },
                 done:function(res, curr, count){

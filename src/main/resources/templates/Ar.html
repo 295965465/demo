@@ -25,8 +25,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">查询条件</label>
             <div class="layui-input-block">
-                <input type="text" name="seachparam" placeholder="AccountCode" autocomplete="off" class="layui-input">
+                <input type="text" name="seachparam" th:value="${session.Haccountcode}" placeholder="AccountCode" autocomplete="off" class="layui-input">
             </div>
+        </div>
+        <div class="layui-inline">
+
+                <input type="text" name="invoiceNo" placeholder="invoiceNo" autocomplete="off" class="layui-input">
+
         </div>
         <div class="layui-inline">
             <select name="seachstatus" lay-verify="" lay-search="">
@@ -68,6 +73,7 @@
              <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
              <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
              <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+             <button class="layui-btn layui-btn-sm" lay-event="isAllHe">批量核销</button>
 
 
     </script>
@@ -90,13 +96,20 @@
             ,table=layui.table
             ,util = layui.util;
 
+
+
+
         table.render({
             elem: '#MyArTables'
             ,url:'/ArAp/initArAPTable'
             ,where:{status:'AR'}
             ,method:"Post"
             ,toolbar: '#MyPamenttoolbar' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'exports', 'print']
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '银行明细'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-add-1'
+            }]
             ,cellMinWidth: 100
             ,limits:[50, 100, 200, 500]
             ,limit:50
@@ -162,13 +175,62 @@
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
+                case 'isAllHe':
+                    var data = checkStatus.data
+                    var seachparam= $('input[name="seachparam"]').val();
+                    var tarids="";
+                    $.each(data, function (i, item) {
+                        tarids +=item.traId+";";
+                    })
+                    console.log(tarids)
+                    if (data.length==0){
+                        layer.msg("你没有选择数据")
+                    }else{
 
+
+                    layer.confirm("确定去核销这些?",function(index){
+                       /*$.ajax({
+                            url:"/user/DownLaods",
+                            data:{data:JSON.stringify(data),
+                                  param:seachparam
+                            },
+                            method:"post",
+                            dateType:"JSON",
+                            success:function (date) {
+                                console.log(date)
+
+
+                                document.location.href =(date);
+                            }
+                        })*/
+                        window.open("/user/DownLaods?data="+tarids+"&param="+seachparam);
+                        layer.close(index);
+
+                    });
+                    }
+                    break;
+                case 'LAYTABLE_TIPS':
+
+                    layer.open({
+                        title: '银行交易',
+                        type: 2,
+                        skin: 'layui-layer-molv',
+                        shade: [0],
+                        area: ['1100px', '600px'],
+                        maxmin: true,
+                        //btn: ['导出'],
+                        content:"/user/trading",
+                        end:function(){
+                            location.reload();
+                        }
+                    })
+                    break;
             };
 
         });
         form.on('submit(LAY-user-front-search1)', function(data){
             var param= $('input[name="seachparam"]').val();
-
+            var invoiceNo= $('input[name="invoiceNo"]').val();
             var seachstatus= $('select[name="seachstatus"]').find("option:selected").val()
 
             //var seachoffice=$('input[name="seachoffice"]').val();
@@ -186,7 +248,8 @@
 
                     seachstatus:seachstatus,
                     postdatetiemRange:postdatetiemRange,
-                    invoicedatetiemRange:invoicedatetiemRange
+                    invoicedatetiemRange:invoicedatetiemRange,
+                    invoiceNo:invoiceNo
 
                 },
                 done:function(res, curr, count){
@@ -208,7 +271,7 @@
                     type: 2,
                     skin: 'layui-layer-molv',
                     shade: [0],
-                    area: ['800px', '600px'],
+                    area: ['1100px', '600px'],
                     //btn: ['导出'],
                     content:"/ArAp/goArApDetail/"+TraID
                 })

@@ -134,6 +134,12 @@
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
+        <!--图像验证-->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
+        </dependency>
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>

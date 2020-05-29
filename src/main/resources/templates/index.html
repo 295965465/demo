@@ -328,9 +328,16 @@
                 case 'TRA_TIPS2':
 
                     if (roldids.indexOf(105801)>-1||roldids.indexOf(92837)>-1){
-                        var url="/user/trading";
-                        window.open(url)
-                       // window.location.href=url;
+                        layer.open({
+                            title: '银行交易',
+                            type: 2,
+                            skin: 'layui-layer-molv',
+                            shade: [0],
+                            area: ['800px', '600px'],
+                            maxmin: true,
+                            //btn: ['导出'],
+                            content:"/user/trading"
+                        })
 
                     }else{
                         layer.msg("没有查看权限")

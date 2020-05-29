@@ -29,6 +29,11 @@
             </div>
         </div>
         <div class="layui-inline">
+
+                <input type="text" name="invoiceNo" placeholder="invoiceNo" autocomplete="off" class="layui-input">
+
+        </div>
+        <div class="layui-inline">
             <select name="seachstatus" lay-verify="" lay-search="">
                             <option value="" selected="">请选择</option>
                             <option value="false">false</option>
@@ -96,7 +101,11 @@
             ,where:{status:'AP'}
             ,method:"Post"
             ,toolbar: '#MyPamenttoolbar' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'exports', 'print']
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '新增主营业务'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-add-1'
+            }]
             ,cellMinWidth: 100
             ,limits:[50, 100, 200, 500]
             ,limit:50
@@ -162,12 +171,25 @@
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
                     break;
+                case 'LAYTABLE_TIPS':
+
+                    layer.open({
+                        title: 'Ap明细',
+                        type: 2,
+                        skin: 'layui-layer-molv',
+                        shade: [0],
+                        area: ['800px', '600px'],
+                        //btn: ['导出'],
+                        content:"/ArAp/goArApDetail/950000"
+                    })
+                    break;
 
             };
 
         });
         form.on('submit(LAY-user-front-search1)', function(data){
             var param= $('input[name="seachparam"]').val();
+            var invoiceNo= $('input[name="invoiceNo"]').val();
 
             var seachstatus= $('select[name="seachstatus"]').find("option:selected").val()
 
@@ -186,7 +208,8 @@
 
                     seachstatus:seachstatus,
                     postdatetiemRange:postdatetiemRange,
-                    invoicedatetiemRange:invoicedatetiemRange
+                    invoicedatetiemRange:invoicedatetiemRange,
+                    invoiceNo:invoiceNo
 
                 },
                 done:function(res, curr, count){

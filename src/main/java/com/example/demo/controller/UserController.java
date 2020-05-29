@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -12,9 +13,11 @@ import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
 import com.example.demo.aspect.Log;
 import com.example.demo.dao.*;
 import com.example.demo.entity.*;
+import com.example.demo.mapper.ArApMapper;
 import com.example.demo.service.paymentService;
 import com.github.wenhao.jpa.Sorts;
 import com.github.wenhao.jpa.Specifications;
@@ -22,10 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -34,6 +34,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileInputStream;
@@ -69,6 +70,10 @@ public class UserController {
     private AccountingTransactionDao AccountingTransactionDao;
     @Autowired
     private  CompanyProfileDao CompanyProfileDao;
+    @Autowired
+    private  traMatchDao traMatchDao;
+    @Resource
+    private ArApMapper arApMapper;
     @RequestMapping(value = "/hello")
     public String show(Model model,String name, HttpSession session,String modeType) {
 
@@ -247,10 +252,12 @@ public class UserController {
 
     @RequestMapping(value = "/initSelect_gukeID",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> initSelect_gukeID(@Param(value = "param") String param, @Param(value = "page") int page, @Param(value = "limit")int limit){
+    public Map<String,Object> initSelect_gukeID(@Param(value = "param") String param,@Param(value = "param1") String param1, @Param(value = "page") int page, @Param(value = "limit")int limit){
         Map<String,Object> map=new HashMap<>();
         Specification<CustomerAccount> specification= Specifications.<CustomerAccount>and()
-                .eq(StrUtil.isNotBlank(param),"customerId",param).build();
+                .eq(StrUtil.isNotBlank(param),"customerId",param)
+                .like(StrUtil.isNotBlank(param1),"accountName","%"+param1+"%")
+                .build();
         List<CustomerAccount> list1 = customerAccountDao.findAll(specification);
         map.put("data",list1);
         map.put("code",0);
@@ -467,6 +474,50 @@ public class UserController {
 
         }
         paymentDao.save(Payment);
+    }
+
+    @Log("AR批量核销")
+    @RequestMapping("/DownLaods")
+    public  void toDownLoads(HttpServletResponse response,String data,String param) throws  Exception{
+
+        String fileName ="Context_"+DateUtil.format(new Date(),"yyyyMMddHHmmss")+".csv";
+        String realpath="C:\\wenbankLog\\"+fileName;
+        CsvWriter writer = CsvUtil.getWriter(realpath, CharsetUtil.CHARSET_UTF_8);
+        List a =new ArrayList();
+        Double aa1=0.0D;
+        Double aa2=0.0D;
+        List<String> traids= CollUtil.newArrayList(data.split(";"));
+        List<ArApEntity> ArApEntitys=arApMapper.getEntityByTraids(traids) ;
+        for (ArApEntity arApEntity : ArApEntitys) {
+            aa1+=Double.parseDouble(arApEntity.getOsTotal());
+            aa2+=Double.parseDouble(arApEntity.getLocalToTal());
+        }
+
+
+        a.add(new String[]{"REC", "AR", "REC",DateUtil.format(new Date(),"yyyyMMdd"),DateUtil.format(new Date(),"yyyyMMdd"),param,ArApEntitys.get(0).getAccountCompanyName(),"DCR", traMatchDao.findAllone(param),"",param,ArApEntitys.get(0).getLocalCurrency(),aa1.toString(),aa2.toString()});
+        for (ArApEntity arApEntity : ArApEntitys) {
+            a.add(new String[]{"PTR", "AR", "INV",arApEntity.getTranNo(),arApEntity.getOsTotal(),arApEntity.getAccountCode()});
+
+        }
+        writer.write(a);
+        //按行写出
+        writer.close();
+        response.setContentType("application/force-download");
+        response.setHeader("content-disposition", "attachment;filename="+fileName);
+        InputStream in = new FileInputStream(realpath);
+        int len = 0;
+        //5.创建数据缓冲区
+        byte[] buffer = new byte[1024];
+        //6.通过response对象获取OutputStream流
+        OutputStream out = response.getOutputStream();
+        //7.将FileInputStream流写入到buffer缓冲区
+        while ((len = in.read(buffer)) > 0) {
+            //8.使用OutputStream将缓冲区的数据输出到客户端浏览器
+            out.write(buffer,0,len);
+        }
+        in.close();
+
+
     }
 
 }

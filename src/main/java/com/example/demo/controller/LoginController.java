@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.wf.captcha.utils.CaptchaUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -31,6 +33,13 @@ public class LoginController {
 
     @Autowired
     private UserMapper UserMapper;
+
+
+    @RequestMapping("/captcha")
+    public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        CaptchaUtil.out(request, response);
+    }
+
     @RequestMapping(value = "/gologin")
     public String login(Model model, String name, HttpSession session) {
 
@@ -48,9 +57,15 @@ public class LoginController {
 
     }
     @RequestMapping(value = "/tologin",method = RequestMethod.POST)
-    public ModelAndView loginin(String name, String password, HttpSession session,HttpServletRequest httpServletRequest) {
+    public ModelAndView loginin(String name, String password, String vedor,HttpSession session,HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView =new ModelAndView();
         Map<String,Object> map= UserMapper.getUserByName(name);
+        if (!CaptchaUtil.ver(vedor, httpServletRequest)) {
+            CaptchaUtil.clear(httpServletRequest);  // 清除session中的验证码
+            httpServletRequest.setAttribute("msg","验证码错误");
+            modelAndView.setViewName("login");
+            return modelAndView;
+        }
         if (!StrUtil.isBlankIfStr(map)){
             String password1=map.get("PASSWORD").toString();
             if (password1.equals(SecureUtil.md5(password))){

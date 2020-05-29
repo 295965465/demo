@@ -17,7 +17,7 @@
       "target": "_self",
       "child": [
         {
-          "title": "主页模板",
+          "title": "功能列表",
           "href": "",
           "icon": "fa fa-home",
           "target": "_self",
@@ -30,13 +30,13 @@
             },
             {
               "title": "Payable\nTransactions",
-              "href": "/ArAp/goAr",
+              "href": "/ArAp/goAp",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },
             {
               "title": "Receivable\nTransactions",
-              "href": "/ArAp/goAp",
+              "href": "/ArAp/goAr",
               "icon": "fa fa-tachometer",
               "target": "_self"
             }

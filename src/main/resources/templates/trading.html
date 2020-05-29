@@ -24,8 +24,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">账号</label>
                 <div class="layui-input-block">
@@ -34,16 +32,16 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
+
+
             <div class="layui-inline">
                 <label class="layui-form-label">检索时间</label>
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input" lay-verify="required" name="tratime" id="tratime" placeholder="交易时间范围 ">
                 </div>
             </div>
-        </div>
-        <div class="layui-form-item">
+
+
             <div class="layui-inline">
                 <label class="layui-form-label">借贷</label>
                 <div class="layui-input-block">
@@ -61,9 +59,34 @@
             </div>
         </div>
     </div>
+    <div class="layui-form">
+         <div>
+             <div class="layui-inline">
+                 <label class="layui-form-label">映射发票</label>
+                 <div class="layui-input-block">
+                     <input type="text" name="seachparam" placeholder="发票号或jobNumber" autocomplete="off" class="layui-input"  >
+                     <div id="showAccount" style="display: none">
+                       <select name="accountNew" lay-search="true"></select>
+                     </div>
+                 </div>
+             </div>
+             <div class="layui-inline">
+                 <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="tra-have-search">
+                     <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                 </button>
+             </div>
+         </div>
+
+
+    </div>
 <div>
-<table class="layui-hide" id="MytradingTable" ></table>
+<table class="layui-hide" id="MytradingTable" lay-filter="MytradingTable" ></table>
 </div>
+    <script type="text/html" id="MyTratoolbar">
+
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+
+    </script>
 <script src="/static/layui/layui.js" charset="utf-8"></script>
 <script src="/static/jquery/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="/static/myjs/defindJs.js"></script>
@@ -127,6 +150,7 @@
             elem: '#MytradingTable'
             ,url:'/user/initMytraingTable'
             ,method:"Post"
+            ,toolbar: '#MyTratoolbar' //开启头部工具栏，并为其绑定左侧模板
             ,cellMinWidth: 100
             ,limits:[50, 100, 200, 500]
             ,limit:50
@@ -135,7 +159,7 @@
                 ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
             }
             ,cols: [ [
-                {type:'checkbox'}
+                {type:'radio'}
                 ,{field:'yurref',  title: '业务参考号',width:140, sort: true}
                 ,{field:'myselfString',  title: '交易时间',width:190, sort: true}
                /* ,{field:'etytim',  title: '交易时间',width:190, sort: true}*/
@@ -171,6 +195,33 @@
             ,page: true
 
         });
+
+
+        table.on('toolbar(MytradingTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    var accountNumber=$('select[name="tranBankAccount"]').find("option:selected").val();
+                    var accountcode=$('select[name="accountNew"]').find("option:selected").val();
+
+                   $.ajax({
+                        url: "/ArAp/insertMatch",
+                        data:{data:JSON.stringify(data).toString(),accountcode:accountcode,accountNumber:accountNumber},
+                        method: "post",
+                        dateType: "JSON",
+                        success: function (date) {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            console.log(index)
+                            parent.layer.close(index);
+
+                        }
+
+                    })
+                    break;
+            };
+
+        });
         //搜索监听
         form.on('submit(tra-search)', function(data){
             console.log($('input[name="seachparam"]').val())
@@ -184,6 +235,7 @@
                 shade: [0.9, '#393D49']
 
             })
+
             table.reload('MytradingTable',{
                 where: {
                     param: trabankName
@@ -201,7 +253,39 @@
             })
         })
 
+        //搜索监听
+        form.on('submit(tra-have-search)', function(data){
+            console.log($('input[name="seachparam"]').val())
 
+            var seachparam= $('input[name="seachparam"]').val();
+            $.ajax({
+                url:"/ArAp/getAccountCode",
+                data:{seachparam:seachparam},
+                method:"post",
+                dateType:"JSON",
+                success:function (date) {
+                    var html = "";
+                    var jsonlength = $.getjsonlength(date);
+                    if(jsonlength==0){
+                       layer.msg("查询错误")
+                    }
+                    else if (jsonlength == 1) {
+                        $.each(date, function (i, item) {
+                            html += "<option value='" + item.accountCode + "' selected=''>" + item.accountCode +":"+item.accountCompanyName+"</option>";
+                        })
+                    } else {
+                        $.each(date, function (i, item) {
+                            html += "<option value='" + item.accountCode + "'>" + item.accountCode +"->"+item.accountCompanyName+"</option>";
+                        })
+                        $('select[name="accountNew"]').append(html);
+                        $('input[name="seachparam"]').hide();
+                        $("#showAccount").show();
+                        form.render('select')
+
+                    }
+                }
+            })
+        })
     })
 </script>
 </body>
